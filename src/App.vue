@@ -1,14 +1,8 @@
+<script setup></script>
+
 <template>
-  <Navbar />
-  <main>
-    <RouterView />
-  </main>
+      <RouterView />
 </template>
 
-<script setup>
-import Navbar from './views/NavBar.vue';
-</script>
-
-<style>
-/* Seu estilo principal */
+<style scoped>
 </style>
