@@ -1,27 +1,23 @@
 <script setup></script>
 <template>
-  <div class="fundo">
-    <div class="centro">
-      <div class="imagens">
-        <img src="/public/foto1.jpg" alt="">
-        <img src="/public/foto2.jpg" alt="">
-        <img src="/public/foto3.jpg" alt="">
-      </div>
-      <h1>A solução ideal para os<br />seus treinos!</h1>
-      <p>
-        O <span class="destaque">InMove</span> potencializa os seus treinos e lhe <br />
-        auxilia a alcançar seus objetivos de forma eficaz
-      </p>
-
-      <router-link to="/frame1" class="continuar">Começar</router-link>
-      <router-link to="/login" class="usuario">Já tenho uma conta</router-link>
+  <div class="centro">
+    <div class="imagens">
+      <img src="/public/foto1.jpg" alt="" />
+      <img src="/public/foto2.jpg" alt="" />
+      <img src="/public/foto3.jpg" alt="" />
     </div>
+    <h1>A solução ideal para os<br />seus treinos!</h1>
+    <p>
+      O <span class="destaque">InMove</span> potencializa os seus treinos e lhe <br />
+      auxilia a alcançar seus objetivos de forma eficaz
+    </p>
+    <router-link to="/frame1" class="continuar">Começar</router-link>
+    <router-link to="/login" class="usuario">Já tenho uma conta</router-link>
   </div>
 </template>
 
 <style scoped>
-
-.fundo {
+body {
   background-color: #0b4650;
   width: 100vw;
   height: 100vh;
@@ -33,7 +29,6 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-
 }
 
 .centro h1 {
@@ -47,7 +42,6 @@
   color: white;
   font-size: 16px;
   font-weight: 400;
-
   margin-top: 0.3125rem;
 }
 
@@ -55,7 +49,7 @@
   color: #e6ff2b;
 }
 
-.continuar{
+.continuar {
   margin-top: 2rem;
   background-color: #e6ff2b;
   color: #0b4650;
@@ -72,7 +66,7 @@
   background-color: #afc01a;
 }
 
-.usuario{
+.usuario {
   margin-top: 1rem;
   background-color: white;
   color: #0b4650;
@@ -91,7 +85,7 @@
 
 .continuar,
 .usuario {
-    min-width: 10rem;
+  min-width: 10rem;
   max-width: 90%;
   padding: 0.75rem 2rem;
   text-align: center;
