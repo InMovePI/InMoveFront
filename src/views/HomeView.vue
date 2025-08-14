@@ -19,8 +19,7 @@
 <style scoped>
 body {
   background-color: #0b4650;
-  width: 100vw;
-  height: 100vh;
+  margin: 0;
 }
 
 .centro {
@@ -33,7 +32,6 @@ body {
 
 .centro h1 {
   color: white;
-
   font-size: 30px;
   font-weight: 600;
 }

@@ -8,7 +8,7 @@
       <p class="txt">
         Primeiro, precisamos saber algumas informações sobre você. Esses dados serão utilizados para criar uma experiência personalizada ao seu objetivo
       </p>
-      <router-link to="/frame1" class="continuar">Começar</router-link>
+      <router-link to="/genero" class="continuar">Começar</router-link>
     </div>
   </div>
 </template>
