@@ -1,21 +1,4 @@
 <script setup>
-import { ref } from 'vue'
-
-const data = ref('')
-
-function formatarData() {
-  // remove tudo que não é número
-  let numeros = data.value.replace(/\D/g, '')
-  
-  if(numeros.length > 2 && numeros.length <= 4){
-    numeros = numeros.slice(0,2) + '/' + numeros.slice(2)
-  } else if(numeros.length > 4){
-    numeros = numeros.slice(0,2) + '/' + numeros.slice(2,4) + '/' + numeros.slice(4,8)
-  }
-
-  data.value = numeros
-}
-
 const etapa = 2 // etapa atual (de 1 a 8)
 const progresso = `${(etapa / 8) * 100}%`
 </script>
@@ -23,16 +6,16 @@ const progresso = `${(etapa / 8) * 100}%`
 <template>
   <div class="container">
     <div class="titulo-container">
-      <h1>Qual a sua data de nascimento?</h1>
+      <h1>Qual a sua altura?</h1>
     </div>
-    <input
-      type="data"
-      placeholder="DD/MM/AAAA"
-      class="input-nascimento"
-      v-model="data"
-      @input="formatarData"
-      maxlength="10"
-    />
+    <input 
+    type="text" 
+  class="input-altura" 
+  placeholder="Ex: 170cm" 
+  maxlength="3"
+  @input="event => event.target.value = event.target.value.replace(/\D/g,'')"
+    
+     />
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
@@ -70,7 +53,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.input-nascimento {
+.input-altura {
     width: 90%;
   max-width: 20rem;
   padding: 0.5rem 0;
@@ -89,7 +72,7 @@ body {
 
 
 
-.input-nascimento::placeholder {
+.input-altura::placeholder {
   color: rgba(255, 255, 255, 0.6); /* placeholder mais claro */
 }
 
@@ -106,26 +89,5 @@ body {
   height: 100%;
   background-color: #e6ff2b;
   border-radius: 2px 0 0 2px;
-}
-
-.continuar {
-  margin-top: 2rem;
-  background-color: #e6ff2b;
-  color: #0b4650;
-  border: none;
-  border-radius: 10rem;
-  text-decoration: none;
-  font-weight: 600;
-  font-family: 'Poppins', sans-serif;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: auto;
-  min-width: 10rem;
-  padding: 0.75rem 2rem;
-  text-align: center;
-}
-
-.continuar:hover {
-  background-color: #afc01a;
 }
 </style>

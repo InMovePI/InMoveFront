@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import SegundaPagView from "../views/SegundaPagView.vue";
 import GeneroView from "../views/GeneroView.vue";
 import NascimentoView from "../views/NascimentoView.vue";
+import AlturaView from "../views/AlturaView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/nascimento',
       name: 'nascimento',
       component: NascimentoView,
+    },
+    {
+      path: '/altura',
+      name: 'altura',
+      component: AlturaView,
     },
     
   ],
