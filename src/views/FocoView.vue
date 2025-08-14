@@ -1,24 +1,20 @@
 <script setup>
-const etapa = 4 // etapa atual (de 1 a 8)
+const etapa = 6 // etapa atual (de 1 a 8)
 const progresso = `${(etapa / 8) * 100}%`
 </script>
 
 <template>
-  <div class="container">
+     <div class="container">
     <div class="titulo-container">
-      <h1>Qual é a sua meta de peso?</h1>
+      <h1>Qual é o grupo muscular que deseja focar?</h1>
     </div>
-    <input
-      type="text"
-      placeholder="Ex: 60kgs"
-      class="input-peso"
-      maxlength="3"
-      @input="(event) => (event.target.value = event.target.value.replace(/\D/g, ''))"
-    />
+    <router-link to="/" class="botao">Balanceado</router-link>
+    <router-link to="/" class="botao">Inferiores</router-link>
+    <router-link to="/" class="botao">Superiores</router-link>
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
-    <router-link to="/objetivo" class="continuar">Continuar</router-link>
+    <router-link to="/" class="continuar">Continuar</router-link>
   </div>
 </template>
 
@@ -52,25 +48,25 @@ body {
   margin-bottom: 1rem;
 }
 
-.input-peso {
-  width: 90%;
-  max-width: 20rem;
-  padding: 0.5rem 0;
-  background-color: transparent;
-  border-left: none;
-  border-right: none;
-  border-top: 2px solid white; /* espessura da borda */
-  border-bottom: 2px solid white; /* espessura da borda */
-  border-radius: 0.25rem;
+.botao {
+  margin-top: 2rem;
+  background-color: rgba(217, 217, 217, 0.5);
   color: white;
-  font-size: 16px;
+  border: none;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
   font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 10rem;
+  max-width: 90%;
+  padding: 0.75rem 5rem;
   text-align: center;
-  outline: none;
 }
 
-.input-altura::placeholder {
-  color: rgba(255, 255, 255, 0.6); /* placeholder mais claro */
+.botao:hover {
+  background-color: rgba(112, 112, 112, 0.5);
 }
 
 .barra {

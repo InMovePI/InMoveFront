@@ -7,6 +7,7 @@ import AlturaView from "../views/AlturaView.vue";
 import PesoView from "../views/PesoView.vue";
 import MetaPesoView from "../views/MetaPesoView.vue";
 import ObjetivoView from "../views/ObjetivoView.vue";
+import FocoView from "../views/FocoView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/objetivo',
       name: 'objetivo',
       component: ObjetivoView,
+    },
+    {
+      path: '/foco',
+      name: 'foco',
+      component: FocoView,
     },
   ],
 });
