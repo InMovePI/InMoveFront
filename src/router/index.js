@@ -6,6 +6,7 @@ import NascimentoView from "../views/NascimentoView.vue";
 import AlturaView from "../views/AlturaView.vue";
 import PesoView from "../views/PesoView.vue";
 import MetaPesoView from "../views/MetaPesoView.vue";
+import ObjetivoView from "../views/ObjetivoView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
       path: '/metapeso',
       name: 'metapeso',
       component: MetaPesoView,
+    },
+    {
+      path: '/objetivo',
+      name: 'objetivo',
+      component: ObjetivoView,
     },
   ],
 });
