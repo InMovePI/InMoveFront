@@ -1,17 +1,38 @@
 <script setup>
-const etapa = 1 // etapa atual (de 1 a 8)
+import { ref } from 'vue'
+
+const data = ref('')
+
+function formatarData() {
+  // remove tudo que não é número
+  let numeros = data.value.replace(/\D/g, '')
+  
+  if(numeros.length > 2 && numeros.length <= 4){
+    numeros = numeros.slice(0,2) + '/' + numeros.slice(2)
+  } else if(numeros.length > 4){
+    numeros = numeros.slice(0,2) + '/' + numeros.slice(2,4) + '/' + numeros.slice(4,8)
+  }
+
+  data.value = numeros
+}
+
+const etapa = 2 // etapa atual (de 1 a 8)
 const progresso = `${(etapa / 8) * 100}%`
 </script>
 
 <template>
   <div class="container">
     <div class="titulo-container">
-      <h1>Qual é o seu sexo?</h1>
+      <h1>Qual a sua data de nascimento?</h1>
     </div>
-    <router-link to="/" class="botao">Masculino</router-link>
-    <router-link to="/" class="botao">Feminino</router-link>
-    <router-link to="/" class="botao">Prefiro não declarar</router-link>
-
+    <input
+      type="data"
+      placeholder="DD/MM/AAAA"
+      class="input-nascimento"
+      v-model="data"
+      @input="formatarData"
+      maxlength="10"
+    />
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
@@ -31,7 +52,6 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  transform: translateY(-10%);
 }
 
 .titulo-container {
@@ -49,25 +69,27 @@ body {
   margin: 0;
 }
 
-.botao {
-  margin-top: 2rem;
-  background-color: rgba(217, 217, 217, 0.5);
+.input-nascimento {
+    width: 90%;
+  max-width: 20rem;
+  padding: 0.5rem 0;
+  background-color: transparent;
+  border-left: none;
+  border-right: none;
+  border-top: 2px solid white;    /* espessura da borda */
+  border-bottom: 2px solid white; /* espessura da borda */
+  border-radius: 0.25rem;
   color: white;
-  border: none;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 600;
+  font-size: 16px;
   font-family: 'Poppins', sans-serif;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  min-width: 10rem;
-  max-width: 90%;
-  padding: 0.75rem 5rem;
   text-align: center;
+  outline: none;
 }
 
-.botao:hover {
-  background-color: rgba(112, 112, 112, 0.5);
+
+
+.input-nascimento::placeholder {
+  color: rgba(255, 255, 255, 0.6); /* placeholder mais claro */
 }
 
 .barra {
