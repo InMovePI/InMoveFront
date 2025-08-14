@@ -16,8 +16,8 @@ function formatarData() {
   data.value = numeros
 }
 
-const etapa = 2 // etapa atual (de 1 a 8)
-const progresso = `${(etapa / 8) * 100}%`
+const etapa = 2 // etapa atual (de 1 a 7)
+const progresso = `${(etapa / 7) * 100}%`
 </script>
 
 <template>

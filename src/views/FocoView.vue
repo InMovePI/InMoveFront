@@ -1,6 +1,15 @@
 <script setup>
-const etapa = 6 // etapa atual (de 1 a 8)
-const progresso = `${(etapa / 8) * 100}%`
+const etapa = 7 // etapa atual (de 1 a 7)
+const progresso = `${(etapa / 7) * 100}%`
+
+import { ref } from 'vue'
+
+const foco = ref(null)
+
+function selecionar(valor) {
+  foco.value = valor
+  console.log('Selecionado:', foco.value) // depois você envia pro back
+}
 </script>
 
 <template>
@@ -8,9 +17,9 @@ const progresso = `${(etapa / 8) * 100}%`
     <div class="titulo-container">
       <h1>Qual é o grupo muscular que deseja focar?</h1>
     </div>
-    <router-link to="/" class="botao">Balanceado</router-link>
-    <router-link to="/" class="botao">Inferiores</router-link>
-    <router-link to="/" class="botao">Superiores</router-link>
+    <button class="botao" @click="selecionar('Balanceado')">Balanceado</button>
+    <button class="botao" @click="selecionar('Inferiores')">Inferiores</button>
+    <button class="botao" @click="selecionar('Superiores')">Superiores</button>
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
@@ -49,12 +58,12 @@ body {
 }
 
 .botao {
+  all: unset; /* reseta todos os estilos padrões */
+  display: block;
   margin-top: 2rem;
   background-color: rgba(217, 217, 217, 0.5);
   color: white;
-  border: none;
   border-radius: 0.5rem;
-  text-decoration: none;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
@@ -67,6 +76,10 @@ body {
 
 .botao:hover {
   background-color: rgba(112, 112, 112, 0.5);
+}
+
+.botao:focus {
+  outline: none; /* tira borda azul feia */
 }
 
 .barra {

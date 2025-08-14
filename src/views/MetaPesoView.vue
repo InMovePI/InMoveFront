@@ -1,6 +1,6 @@
 <script setup>
-const etapa = 4 // etapa atual (de 1 a 8)
-const progresso = `${(etapa / 8) * 100}%`
+const etapa = 5 // etapa atual (de 1 a 7)
+const progresso = `${(etapa / 7) * 100}%`
 </script>
 
 <template>

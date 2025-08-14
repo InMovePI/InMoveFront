@@ -8,6 +8,7 @@ import PesoView from "../views/PesoView.vue";
 import MetaPesoView from "../views/MetaPesoView.vue";
 import ObjetivoView from "../views/ObjetivoView.vue";
 import FocoView from "../views/FocoView.vue";
+import LoginView from "../views/loginView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,11 @@ const router = createRouter({
       path: '/foco',
       name: 'foco',
       component: FocoView,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
     },
   ],
 });

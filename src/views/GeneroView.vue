@@ -1,6 +1,14 @@
 <script setup>
-const etapa = 1 // etapa atual (de 1 a 8)
-const progresso = `${(etapa / 8) * 100}%`
+import { ref } from 'vue'
+
+const etapa = 1
+const progresso = `${(etapa / 7) * 100}%`
+
+const sexo = ref(null)
+
+function selecionar(valor) {
+  sexo.value = valor
+}
 </script>
 
 <template>
@@ -8,13 +16,32 @@ const progresso = `${(etapa / 8) * 100}%`
     <div class="titulo-container">
       <h1>Qual é o seu sexo?</h1>
     </div>
-    <router-link to="/" class="botao">Masculino</router-link>
-    <router-link to="/" class="botao">Feminino</router-link>
-    <router-link to="/" class="botao">Prefiro não declarar</router-link>
+
+    <button 
+      class="botao" 
+      :class="{ selecionado: sexo === 'Masculino' }" 
+      @click="selecionar('Masculino')">
+      Masculino
+    </button>
+
+    <button 
+      class="botao" 
+      :class="{ selecionado: sexo === 'Feminino' }" 
+      @click="selecionar('Feminino')">
+      Feminino
+    </button>
+
+    <button 
+      class="botao" 
+      :class="{ selecionado: sexo === 'Prefiro não declarar' }" 
+      @click="selecionar('Prefiro não declarar')">
+      Prefiro não declarar
+    </button>
 
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
+
     <router-link to="/nascimento" class="continuar">Continuar</router-link>
   </div>
 </template>
@@ -50,16 +77,16 @@ body {
 }
 
 .botao {
+  all: unset;
+  display: block;
   margin-top: 2rem;
   background-color: rgba(217, 217, 217, 0.5);
   color: white;
-  border: none;
   border-radius: 0.5rem;
-  text-decoration: none;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease;
   min-width: 10rem;
   max-width: 90%;
   padding: 0.75rem 5rem;
@@ -68,6 +95,12 @@ body {
 
 .botao:hover {
   background-color: rgba(112, 112, 112, 0.5);
+}
+
+.selecionado {
+  background-color: #e6ff2b;
+  color: #0b4650;
+  transform: scale(1.03);
 }
 
 .barra {
