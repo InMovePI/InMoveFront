@@ -4,21 +4,21 @@ const progresso = `${(etapa / 8) * 100}%`
 </script>
 
 <template>
-  <div class="container">
+    <div class="container">
     <div class="titulo-container">
-      <h1>Qual a sua altura?</h1>
+      <h1>Qual o seu peso atual?</h1>
     </div>
     <input
       type="text"
-      class="input-altura"
-      placeholder="Ex: 170cm"
+      placeholder="Ex: 60kgs"
+      class="input-peso"
       maxlength="3"
       @input="(event) => (event.target.value = event.target.value.replace(/\D/g, ''))"
     />
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
-    <router-link to="/peso" class="continuar">Continuar</router-link>
+    <router-link to="/metapeso" class="continuar">Continuar</router-link>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.input-altura {
+.input-peso {
   width: 90%;
   max-width: 20rem;
   padding: 0.5rem 0;
