@@ -17,9 +17,9 @@ function selecionar(valor) {
     <div class="titulo-container">
       <h1>Qual é o grupo muscular que deseja focar?</h1>
     </div>
-    <button class="botao" @click="selecionar('Balanceado')">Balanceado</button>
-    <button class="botao" @click="selecionar('Inferiores')">Inferiores</button>
-    <button class="botao" @click="selecionar('Superiores')">Superiores</button>
+    <button class="botao" :class="{ selecionado: foco === 'Balanceado' }"  @click="selecionar('Balanceado')">Balanceado</button>
+    <button class="botao" :class="{ selecionado: foco === 'Inferiores' }"  @click="selecionar('Inferiores')">Inferiores</button>
+    <button class="botao" :class="{ selecionado: foco === 'Superiores' }"  @click="selecionar('Superiores')">Superiores</button>
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
@@ -58,7 +58,7 @@ body {
 }
 
 .botao {
-  all: unset; /* reseta todos os estilos padrões */
+  all: unset;
   display: block;
   margin-top: 2rem;
   background-color: rgba(217, 217, 217, 0.5);
@@ -67,7 +67,7 @@ body {
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease;
   min-width: 10rem;
   max-width: 90%;
   padding: 0.75rem 5rem;
@@ -78,8 +78,10 @@ body {
   background-color: rgba(112, 112, 112, 0.5);
 }
 
-.botao:focus {
-  outline: none; /* tira borda azul feia */
+.selecionado {
+  background-color: #e6ff2b;
+  color: #0b4650;
+  transform: scale(1.03);
 }
 
 .barra {

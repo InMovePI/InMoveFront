@@ -1,4 +1,11 @@
 <script setup>
+import { ref } from 'vue';
+
+const objetivo = ref(null)
+
+function selecionar(valor) {
+  objetivo.value = valor
+}
 const etapa = 6 // etapa atual (de 1 a 7)
 const progresso = `${(etapa / 7) * 100}%`
 </script>
@@ -8,9 +15,9 @@ const progresso = `${(etapa / 7) * 100}%`
     <div class="titulo-container">
       <h1>Qual é o seu objetivo?</h1>
     </div>
-    <router-link to="/" class="botao">Hipertrofia</router-link>
-    <router-link to="/" class="botao">Emagrecimento</router-link>
-    <router-link to="/" class="botao">Definição Muscular</router-link>
+    <button :class="{ selecionado: objetivo === 'Hipertrofia' }" @click="selecionar('Hipertrofia')"  class="botao">Hipertrofia</button>
+    <button :class="{ selecionado: objetivo === 'Emagrecimento' }" @click="selecionar('Emagrecimento')"  class="botao">Emagrecimento</button>
+    <button :class="{ selecionado: objetivo === 'Definição Muscular' }" @click="selecionar('Definição Muscular')"  class="botao">Definição Muscular</button>
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
@@ -49,16 +56,16 @@ body {
 }
 
 .botao {
+  all: unset;
+  display: block;
   margin-top: 2rem;
   background-color: rgba(217, 217, 217, 0.5);
   color: white;
-  border: none;
   border-radius: 0.5rem;
-  text-decoration: none;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.1s ease;
   min-width: 10rem;
   max-width: 90%;
   padding: 0.75rem 5rem;
@@ -67,6 +74,12 @@ body {
 
 .botao:hover {
   background-color: rgba(112, 112, 112, 0.5);
+}
+
+.selecionado {
+  background-color: #e6ff2b;
+  color: #0b4650;
+  transform: scale(1.03);
 }
 
 .barra {
