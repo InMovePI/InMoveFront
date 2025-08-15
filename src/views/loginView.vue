@@ -15,7 +15,7 @@
       <input type="password" id="senha">
     </div>
 
-    <router-link to="" class="continuar">Continuar</router-link>
+    <router-link to="/" class="continuar">Continuar</router-link>
   </div>
 </template>
 

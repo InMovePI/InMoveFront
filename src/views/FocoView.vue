@@ -3,12 +3,21 @@ const etapa = 7 // etapa atual (de 1 a 7)
 const progresso = `${(etapa / 7) * 100}%`
 
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const foco = ref(null)
 
 function selecionar(valor) {
-  foco.value = valor
-  console.log('Selecionado:', foco.value) // depois você envia pro back
+  foco.value = valor 
+}
+
+function continuar() {
+  if (!foco.value) {
+    alert('Por favor, selecione um grupo muscular antes de continuar.')
+    return
+  }
+  router.push('/') // muda pro nome da próxima rota
 }
 </script>
 
@@ -23,7 +32,7 @@ function selecionar(valor) {
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
-    <router-link to="/" class="continuar">Continuar</router-link>
+    <button class="continuar" @click="continuar">Continuar</button>
   </div>
 </template>
 
@@ -100,17 +109,17 @@ body {
 }
 
 .continuar {
+  all: unset; /* reseta estilos padrões do navegador */
+  display: inline-block;
   margin-top: 2rem;
   background-color: #e6ff2b;
   color: #0b4650;
-  border: none;
   border-radius: 10rem;
   text-decoration: none;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: auto;
   min-width: 10rem;
   padding: 0.75rem 2rem;
   text-align: center;

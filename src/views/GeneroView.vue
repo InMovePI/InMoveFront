@@ -1,13 +1,25 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const sexo = ref(null)
 
 const etapa = 1
 const progresso = `${(etapa / 7) * 100}%`
 
-const sexo = ref(null)
+
 
 function selecionar(valor) {
   sexo.value = valor
+}
+
+function continuar() {
+  if (!sexo.value) {
+    alert('Por favor, selecione um gênero antes de continuar.')
+    return
+  }
+  router.push('/nascimento') // muda pro nome da próxima rota
 }
 </script>
 
@@ -42,7 +54,7 @@ function selecionar(valor) {
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
 
-    <router-link to="/nascimento" class="continuar">Continuar</router-link>
+    <button class="continuar" @click="continuar">Continuar</button>
   </div>
 </template>
 
@@ -119,17 +131,17 @@ body {
 }
 
 .continuar {
+  all: unset; /* reseta estilos padrões do navegador */
+  display: inline-block;
   margin-top: 2rem;
   background-color: #e6ff2b;
   color: #0b4650;
-  border: none;
   border-radius: 10rem;
   text-decoration: none;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: auto;
   min-width: 10rem;
   padding: 0.75rem 2rem;
   text-align: center;
