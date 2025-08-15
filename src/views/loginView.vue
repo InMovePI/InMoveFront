@@ -1,4 +1,24 @@
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const email = ref('')
+const senha = ref('')
+const router = useRouter()
+
+function continuar() {
+  if (!email.value || !senha.value) {
+    alert('Por favor, preencha o email e a senha.')
+    return
+  }
+
+  // Aqui você faria a requisição de login pro back-end
+  console.log('Tentando login com:', email.value, senha.value)
+
+  // Se login for bem-sucedido:
+  router.push('/')
+}
+</script>
 
 <template>
   <div class="container">
@@ -7,15 +27,15 @@
 
     <div class="campo">
       <label for="email">Email:</label>
-      <input type="email" id="email">
+      <input type="email" v-model="email" id="email" placeholder="Digite seu email">
     </div>
 
     <div class="campo">
       <label for="senha">Senha:</label>
-      <input type="password" id="senha">
+      <input type="password" v-model="senha" id="senha" placeholder="Digite sua senha">
     </div>
 
-    <router-link to="/" class="continuar">Continuar</router-link>
+    <button class="continuar" @click="continuar">Continuar</button>
   </div>
 </template>
 

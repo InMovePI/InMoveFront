@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const data = ref('')
+const router = useRouter()
 
 function formatarData() {
   // remove tudo que não é número
@@ -14,6 +16,14 @@ function formatarData() {
   }
 
   data.value = numeros
+}
+
+function continuar() {
+  if (!data.value) {
+    alert('Por favor, insira a sua data de nascimento.')
+    return
+  }
+  router.push('/altura')
 }
 
 const etapa = 2 // etapa atual (de 1 a 7)
@@ -36,7 +46,7 @@ const progresso = `${(etapa / 7) * 100}%`
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
-    <router-link to="/altura" class="continuar">Continuar</router-link>
+    <button class="continuar" @click="continuar">Continuar</button>
   </div>
 </template>
 

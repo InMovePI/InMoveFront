@@ -1,6 +1,20 @@
 <script setup>
 const etapa = 5 // etapa atual (de 1 a 7)
 const progresso = `${(etapa / 7) * 100}%`
+
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const metapeso = ref('')
+const router = useRouter()
+
+function continuar() {
+  if (!metapeso.value) {
+    alert('Por favor, insira a sua meta de peso.')
+    return
+  }
+  router.push('/objetivo')
+}
 </script>
 
 <template>
@@ -13,12 +27,13 @@ const progresso = `${(etapa / 7) * 100}%`
       placeholder="Ex: 60kgs"
       class="input-peso"
       maxlength="3"
+      v-model="metapeso"
       @input="(event) => (event.target.value = event.target.value.replace(/\D/g, ''))"
     />
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
-    <router-link to="/objetivo" class="continuar">Continuar</router-link>
+    <button class="continuar" @click="continuar">Continuar</button>
   </div>
 </template>
 

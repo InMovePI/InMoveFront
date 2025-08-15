@@ -1,6 +1,20 @@
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
 const etapa = 3 // etapa atual (de 1 a 7)
 const progresso = `${(etapa / 7) * 100}%`
+
+const altura = ref('') // valor digitado
+const router = useRouter()
+
+function continuar() {
+  if (!altura.value) {
+    alert('Por favor, insira a sua altura.')
+    return
+  }
+  router.push('/peso')
+}
 </script>
 
 <template>
@@ -13,12 +27,13 @@ const progresso = `${(etapa / 7) * 100}%`
       class="input-altura"
       placeholder="Ex: 170cm"
       maxlength="3"
-      @input="(event) => (event.target.value = event.target.value.replace(/\D/g, ''))"
+      v-model="altura"
+      @input="altura = altura.replace(/\D/g, '')"
     />
     <div class="barra">
       <div class="progresso" :style="{ width: progresso }"></div>
     </div>
-    <router-link to="/peso" class="continuar">Continuar</router-link>
+    <button class="continuar" @click="continuar">Continuar</button>
   </div>
 </template>
 
