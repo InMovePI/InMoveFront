@@ -17,7 +17,7 @@ function continuar() {
     alert('Por favor, selecione um grupo muscular antes de continuar.')
     return
   }
-  router.push('/') // muda pro nome da próxima rota
+  router.push('/principal')
 }
 </script>
 

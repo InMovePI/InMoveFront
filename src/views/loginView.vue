@@ -16,7 +16,7 @@ function continuar() {
   console.log('Tentando login com:', email.value, senha.value)
 
   // Se login for bem-sucedido:
-  router.push('/')
+  router.push('/principal')
 }
 </script>
 
