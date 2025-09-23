@@ -46,10 +46,66 @@ const progresso = `${(etapa / 100) * 100}%`
         </div>
       </div>
     </div>
+
+    <div class="direita">
+      <div class="texto">
+        <h1>Meus Treinos:</h1>
+        <p>Crie suas próprias rotinas de treino</p>
+      </div>
+      <div class="container2">
+        <h1>Criar uma rotina de treino</h1>
+        <p>+</p>
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
+main {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container2 {
+  width: 250px;
+  margin:  10px 220px 0 0;
+  position: relative;
+}
+
+.container2 p {
+  font-size: 50px;
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  color: white;
+}
+
+.container2 h1 {
+  color: white;
+  font-family: poppins, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  width: 170px;
+}
+
+.texto h1 {
+  font-size: 18px;
+  color: #e6ff2b;
+  font-weight: 600;
+}
+
+.texto p {
+  color: white;
+}
+
+.texto {
+  margin: 40px 220px 0px 0px;
+  font-family: poppins, sans-serif;
+  text-align: center;
+}
+
 .opcoes h1 {
   margin-bottom: 10px;
   color: #e6ff2b;
@@ -59,7 +115,7 @@ const progresso = `${(etapa / 100) * 100}%`
 }
 
 .opcoes {
-  margin: 50px 95px;
+  margin: 50px 0px 0px 220px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -69,7 +125,7 @@ const progresso = `${(etapa / 100) * 100}%`
   display: flex;
   align-items: center; /* centraliza verticalmente img + p */
   gap: 10px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 
 .item a {
@@ -94,14 +150,21 @@ const progresso = `${(etapa / 100) * 100}%`
   width: 100%;
 }
 
-.container {
-  justify-content: flex-start; /* alinha no topo */
-  align-items: flex-start; /* alinha à esquerda */
-  background-color: rgba(51, 51, 51, 0.4);
-  width: 250px;
+.container,
+.container2 {
+  min-height: 120px;
   padding: 20px;
-  margin: 70px 95px 0px;
   border-radius: 13px;
+  background-color: rgba(51, 51, 51, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container {
+  align-items: flex-start; /* alinha à esquerda */
+  width: 250px;
+  margin: 100px 0px 0px 220px;
 }
 
 .container h1,
