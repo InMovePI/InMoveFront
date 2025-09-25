@@ -56,6 +56,14 @@ const progresso = `${(etapa / 100) * 100}%`
         <h1>Criar uma rotina de treino</h1>
         <p>+</p>
       </div>
+
+      <div class="texto2">
+        <h1>Treinos Imediatos:</h1>
+        <p>Um novo treino sempre baseado nas suas preferências.</p>
+      </div>
+      <div class="container2">
+        <h1>Treino Imediato</h1>
+      </div>
     </div>
   </main>
 </template>
@@ -66,9 +74,29 @@ main {
   justify-content: space-between;
 }
 
+
+.direita {
+  margin: 0px 90px;
+}
+
+.texto2{
+  margin: 20px;
+}
+
+.texto2 h1{
+  font-size: 18px;
+  color: #e6ff2b;
+  font-weight: 600;
+}
+
+.texto2 p{
+  color: white;
+  width: 300px
+}
+
 .container2 {
   width: 250px;
-  margin:  10px 220px 0 0;
+  margin: 10px 20px 0 0;
   position: relative;
 }
 
@@ -98,10 +126,11 @@ main {
 
 .texto p {
   color: white;
+  width: 300px;
 }
 
 .texto {
-  margin: 40px 220px 0px 0px;
+  margin: 98px 220px 0px 0px;
   font-family: poppins, sans-serif;
   text-align: center;
 }
@@ -115,7 +144,7 @@ main {
 }
 
 .opcoes {
-  margin: 50px 0px 0px 220px;
+  margin: 50px 0px 0px 250px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -164,7 +193,7 @@ main {
 .container {
   align-items: flex-start; /* alinha à esquerda */
   width: 250px;
-  margin: 100px 0px 0px 220px;
+  margin: 160px 0px 0px 250px;
 }
 
 .container h1,
