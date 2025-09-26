@@ -104,7 +104,7 @@ body {
   object-fit: cover;
 }
 
-/* Para deixar a última imagem centralizada na segunda linha */
+
 .imagens img:nth-child(3) {
   grid-column: 1 / span 2;
   justify-self: center;

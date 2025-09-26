@@ -1,5 +1,5 @@
 <script setup>
-const etapa = 5 // etapa atual (de 1 a 7)
+const etapa = 5 
 const progresso = `${(etapa / 7) * 100}%`
 
 import { ref } from 'vue'
@@ -74,8 +74,8 @@ body {
   background-color: transparent;
   border-left: none;
   border-right: none;
-  border-top: 2px solid white; /* espessura da borda */
-  border-bottom: 2px solid white; /* espessura da borda */
+  border-top: 2px solid white; 
+  border-bottom: 2px solid white; 
   border-radius: 0.25rem;
   color: white;
   font-size: 16px;
@@ -85,7 +85,7 @@ body {
 }
 
 .input-altura::placeholder {
-  color: rgba(255, 255, 255, 0.6); /* placeholder mais claro */
+  color: rgba(255, 255, 255, 0.6); 
 }
 
 .barra {

@@ -12,10 +12,8 @@ function continuar() {
     return
   }
 
-  // Aqui você faria a requisição de login pro back-end
   console.log('Tentando login com:', email.value, senha.value)
 
-  // Se login for bem-sucedido:
   router.push('/principal')
 }
 </script>

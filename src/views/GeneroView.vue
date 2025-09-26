@@ -19,7 +19,7 @@ function continuar() {
     alert('Por favor, selecione um gênero antes de continuar.')
     return
   }
-  router.push('/nascimento') // muda pro nome da próxima rota
+  router.push('/nascimento') 
 }
 </script>
 
@@ -131,7 +131,7 @@ body {
 }
 
 .continuar {
-  all: unset; /* reseta estilos padrões do navegador */
+  all: unset; 
   display: inline-block;
   margin-top: 2rem;
   background-color: #e6ff2b;

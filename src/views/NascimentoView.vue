@@ -6,7 +6,7 @@ const data = ref('')
 const router = useRouter()
 
 function formatarData() {
-  // remove tudo que não é número
+
   let numeros = data.value.replace(/\D/g, '')
   
   if(numeros.length > 2 && numeros.length <= 4){
@@ -26,7 +26,7 @@ function continuar() {
   router.push('/altura')
 }
 
-const etapa = 2 // etapa atual (de 1 a 7)
+const etapa = 2 
 const progresso = `${(etapa / 7) * 100}%`
 </script>
 
@@ -87,8 +87,8 @@ body {
   background-color: transparent;
   border-left: none;
   border-right: none;
-  border-top: 2px solid white;    /* espessura da borda */
-  border-bottom: 2px solid white; /* espessura da borda */
+  border-top: 2px solid white;    
+  border-bottom: 2px solid white; 
   border-radius: 0.25rem;
   color: white;
   font-size: 16px;
@@ -100,7 +100,7 @@ body {
 
 
 .input-nascimento::placeholder {
-  color: rgba(255, 255, 255, 0.6); /* placeholder mais claro */
+  color: rgba(255, 255, 255, 0.6); 
 }
 
 .barra {

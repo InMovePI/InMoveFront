@@ -159,7 +159,7 @@ main {
 
 .item {
   display: flex;
-  align-items: center; /* centraliza verticalmente img + p */
+  align-items: center; 
   gap: 10px;
   margin-bottom: 10px;
 }
@@ -200,7 +200,7 @@ main {
 }
 
 .container {
-  align-items: flex-start; /* alinha à esquerda */
+  align-items: flex-start; 
   width: 250px;
   margin: 100px 0px 0px 250px;
 }

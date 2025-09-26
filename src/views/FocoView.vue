@@ -1,5 +1,5 @@
 <script setup>
-const etapa = 7 // etapa atual (de 1 a 7)
+const etapa = 7 
 const progresso = `${(etapa / 7) * 100}%`
 
 import { ref } from 'vue'
@@ -109,7 +109,7 @@ body {
 }
 
 .continuar {
-  all: unset; /* reseta estilos padrões do navegador */
+  all: unset; 
   display: inline-block;
   margin-top: 2rem;
   background-color: #e6ff2b;

@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 
-const etapa = 6 // etapa atual (de 1 a 7)
+const etapa = 6 
 const progresso = `${(etapa / 7) * 100}%`
 
 const router = useRouter()
@@ -18,7 +18,7 @@ function continuar() {
     alert('Por favor, selecione um objetivo antes de continuar.')
     return
   }
-  router.push('/foco') // muda pro nome da próxima rota
+  router.push('/foco')
 }
 </script>
 
@@ -110,7 +110,7 @@ body {
 }
 
 .continuar {
-  all: unset; /* reseta estilos padrões do navegador */
+  all: unset; 
   display: inline-block;
   margin-top: 2rem;
   background-color: #e6ff2b;
