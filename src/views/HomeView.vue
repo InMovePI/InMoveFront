@@ -1,4 +1,39 @@
-<script setup></script>
+<script setup>
+import { onMounted } from 'vue';
+
+import { useAuthStore } from '@/stores/auth';
+
+
+
+const authStore = useAuthStore();
+
+const getUserInfo = async () => {
+  // try {
+    const authToken = localStorage.getItem('psg_auth_token');
+    console.log(authToken);
+    // const passage = new Passage(APP_ID);
+    // const user = passage.getCurrentUser();
+    // const userInfo = await user.userInfo();
+    // console.log(userInfo);
+    // console.log(authToken);
+
+    // const passageUser = new PassageUser(authToken);
+    // const user = await passageUser.userInfo(authToken);
+    // if (user) {
+    await authStore.setToken(authToken);
+    // } else {
+    //   authStore.unsetToken();
+    // }
+  // } catch (_) {
+  //   authStore.unsetToken();
+  // }
+};
+
+
+onMounted(() => {
+  getUserInfo();
+});
+</script>
 <template>
   <div class="centro">
     <div class="imagens">

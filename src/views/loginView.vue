@@ -1,21 +1,8 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import '@passageidentity/passage-elements/passage-auth';
 
-const email = ref('')
-const senha = ref('')
-const router = useRouter()
+const APP_ID = import.meta.env.VITE_PASSAGE_APP_ID;
 
-function continuar() {
-  if (!email.value || !senha.value) {
-    alert('Por favor, preencha o email e a senha.')
-    return
-  }
-
-  console.log('Tentando login com:', email.value, senha.value)
-
-  router.push('/principal')
-}
 </script>
 
 <template>
@@ -24,16 +11,10 @@ function continuar() {
     <p class="subtitulo">Faça login para continuar usando sua conta.</p>
 
     <div class="campo">
-      <label for="email">Email:</label>
-      <input type="email" v-model="email" id="email" placeholder="Digite seu email">
+          <div class="authContainer">
+        <passage-auth :app-id="APP_ID"></passage-auth>
+          </div>
     </div>
-
-    <div class="campo">
-      <label for="senha">Senha:</label>
-      <input type="password" v-model="senha" id="senha" placeholder="Digite sua senha">
-    </div>
-
-    <button class="continuar" @click="continuar">Continuar</button>
   </div>
 </template>
 

@@ -11,7 +11,7 @@ const progresso = `${(etapa / 100) * 100}%`
         <router-link>Home </router-link>
         <router-link>Atividades</router-link>
         <router-link>Explorar</router-link>
-        <router-link>Pessoal</router-link>
+        <router-link to="/login">Pessoal</router-link>
       </div>
       <router-link>
         <img src="/public/icons8-usuário-homem-com-círculo-90.png" width="45px" height="45px" />
@@ -63,7 +63,7 @@ const progresso = `${(etapa / 100) * 100}%`
       </div>
       <div class="container3">
         <h1>Treino Imediato</h1>
-        <p>Começar agora ></p>
+        <p>Começar agora </p>
       </div>
     </div>
   </main>
