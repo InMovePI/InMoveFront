@@ -61,8 +61,9 @@ const progresso = `${(etapa / 100) * 100}%`
         <h1>Treinos Imediatos:</h1>
         <p>Um novo treino sempre baseado nas suas preferências.</p>
       </div>
-      <div class="container2">
+      <div class="container3">
         <h1>Treino Imediato</h1>
+        <p>Começar agora ></p>
       </div>
     </div>
   </main>
@@ -74,13 +75,18 @@ main {
   justify-content: space-between;
 }
 
+.container3{
+  width: 250px;
+  margin: 10px 20px 0 0;
+}
 
 .direita {
   margin: 0px 90px;
 }
 
 .texto2{
-  margin: 20px;
+  margin: 20px 220px 0px 0px;
+  text-align: center;
 }
 
 .texto2 h1{
@@ -110,7 +116,8 @@ main {
   color: white;
 }
 
-.container2 h1 {
+.container2 h1,
+ .container3 h1{
   color: white;
   font-family: poppins, sans-serif;
   font-weight: 600;
@@ -130,7 +137,7 @@ main {
 }
 
 .texto {
-  margin: 98px 220px 0px 0px;
+  margin: 41px 220px 0px 0px;
   font-family: poppins, sans-serif;
   text-align: center;
 }
@@ -180,7 +187,8 @@ main {
 }
 
 .container,
-.container2 {
+.container2,
+.container3 {
   min-height: 120px;
   padding: 20px;
   border-radius: 13px;
@@ -188,16 +196,18 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .container {
   align-items: flex-start; /* alinha à esquerda */
   width: 250px;
-  margin: 160px 0px 0px 250px;
+  margin: 100px 0px 0px 250px;
 }
 
 .container h1,
-.container p {
+.container p,
+.container3 p {
   margin: 0;
   color: white;
   font-family: poppins, sans-serif;
