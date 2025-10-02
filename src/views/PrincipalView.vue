@@ -10,63 +10,15 @@ const progresso = `${(etapa / 100) * 100}%`
       <div class="pages">
         <router-link>Home </router-link>
         <router-link>Atividades</router-link>
-        <router-link>Explorar</router-link>
-        <router-link to="/login">Pessoal</router-link>
+        <router-link>Sobre</router-link>
+        <router-link to="/login">Conta</router-link>
       </div>
-      <router-link>
+      <router-link to="/cadastro">
         <img src="/public/icons8-usuário-homem-com-círculo-90.png" width="45px" height="45px" />
       </router-link>
     </div>
   </header>
-  <main>
-    <div class="esquerda">
-      <div class="container">
-        <h1>Treino Personalizado</h1>
-        <img src="/public/icons8-haltere-60.png" width="40px" height="40px" />
-        <p>Progresso 5%</p>
-        <div class="barra">
-          <div class="progresso" :style="{ width: progresso }"></div>
-        </div>
-      </div>
-      <div class="opcoes">
-        <h1>Mais Opções</h1>
-        <div class="item">
-          <img src="/public/icons8-lista-32.png" width="25px" height="25px" />
-          <router-link>Histórico de treinos</router-link>
-        </div>
-
-        <div class="item">
-          <img src="/public/icons8-sino-32.png" width="26px" height="26px" />
-          <router-link>Lembretes e notificações</router-link>
-        </div>
-
-        <div class="item">
-          <img src="/public/icons8-estrela-32.png" width="25px" height="25px" />
-          <router-link>Avaliar o aplicativo</router-link>
-        </div>
-      </div>
-    </div>
-
-    <div class="direita">
-      <div class="texto">
-        <h1>Meus Treinos:</h1>
-        <p>Crie suas próprias rotinas de treino</p>
-      </div>
-      <div class="container2">
-        <h1>Criar uma rotina de treino</h1>
-        <p>+</p>
-      </div>
-
-      <div class="texto2">
-        <h1>Treinos Imediatos:</h1>
-        <p>Um novo treino sempre baseado nas suas preferências.</p>
-      </div>
-      <div class="container3">
-        <h1>Treino Imediato</h1>
-        <p>Começar agora </p>
-      </div>
-    </div>
-  </main>
+  
 </template>
 
 <style scoped>

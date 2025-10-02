@@ -10,6 +10,7 @@ import ObjetivoView from "../views/ObjetivoView.vue";
 import FocoView from "../views/FocoView.vue";
 import LoginView from "../views/loginView.vue";
 import PrincipalView from "../views/PrincipalView.vue";
+import CadastroView from "../views/CadastroView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,11 @@ const router = createRouter({
       path: '/principal',
       name: 'principal',
       component: PrincipalView,
+    },
+    {
+      path: '/cadastro',
+      name: 'cadastro',
+      component: CadastroView,
     },
   ],
 });
