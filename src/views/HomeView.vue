@@ -53,7 +53,7 @@ onMounted(() => {
 
 <style scoped>
 body {
-  background-color: #0b4650;
+  background-color: rgba(30, 30, 30, 0.9);
   margin: 0;
 }
 

@@ -1,202 +1,101 @@
-<script setup>
-const etapa = 5
-const progresso = `${(etapa / 100) * 100}%`
+<script>
+import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <header>
+   <header>
     <div class="navegaçao">
-      <h1>InMove</h1>
+      <h1>INMOVE</h1>
       <div class="pages">
-        <router-link>Home </router-link>
-        <router-link>Atividades</router-link>
-        <router-link>Sobre</router-link>
-        <router-link to="/login">Conta</router-link>
+        <router-link><span>Home</span></router-link>
+        <router-link>Painel de treinamento</router-link>
+        <router-link>Explorar</router-link>
+        <router-link to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
       </div>
-      <router-link to="/cadastro">
-        <img src="/public/icons8-usuário-homem-com-círculo-90.png" width="45px" height="45px" />
-      </router-link>
     </div>
   </header>
-  
+  <main>
+    <div class="texto">
+        <h2>Olá, usuário!</h2>
+        <h1>MAKE YOUR BODY SHAPE</h1>
+        <p>Descubra o prazer de se <span>movimentar</span>,
+        superar desafios e construir uma rotina mais
+        <span>equilibrada</span>. Comece hoje a sua
+        jornada rumo à melhor versão de si mesmo.</p>
+    </div>
+
+    <img src="/public/mulheres-jovens-participando-da-aula-de-spinning(1).jpg" alt="">
+  </main>
+
 </template>
 
 <style scoped>
 main {
   display: flex;
-  justify-content: space-between;
-}
-
-.container3{
-  width: 250px;
-  margin: 10px 20px 0 0;
-}
-
-.direita {
-  margin: 0px 90px;
-}
-
-.texto2{
-  margin: 20px 220px 0px 0px;
-  text-align: center;
-}
-
-.texto2 h1{
-  font-size: 18px;
-  color: #e6ff2b;
-  font-weight: 600;
-}
-
-.texto2 p{
-  color: white;
-  width: 300px
-}
-
-.container2 {
-  width: 250px;
-  margin: 10px 20px 0 0;
-  position: relative;
-}
-
-.container2 p {
-  font-size: 50px;
-  position: absolute;
-  right: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  margin: 0;
-  color: white;
-}
-
-.container2 h1,
- .container3 h1{
-  color: white;
-  font-family: poppins, sans-serif;
-  font-weight: 600;
-  font-size: 18px;
-  width: 170px;
-}
-
-.texto h1 {
-  font-size: 18px;
-  color: #e6ff2b;
-  font-weight: 600;
-}
-
-.texto p {
-  color: white;
-  width: 300px;
-}
-
-.texto {
-  margin: 41px 220px 0px 0px;
-  font-family: poppins, sans-serif;
-  text-align: center;
-}
-
-.opcoes h1 {
-  margin-bottom: 10px;
-  color: #e6ff2b;
-  font-size: 18px;
-  font-family: poppins, sans-serif;
-  font-weight: 600;
-}
-
-.opcoes {
-  margin: 50px 0px 0px 250px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.item {
-  display: flex;
+   justify-content: space-between;
   align-items: center; 
-  gap: 10px;
-  margin-bottom: 10px;
+  height: 100vh;
+  padding: 0 80px; 
 }
 
-.item a {
-  color: white;
-  font-family: poppins, sans-serif;
-  text-decoration: none;
-  position: relative;
+img{
+  width: 800px;
+  height:500px;
+  border-radius: 30px;
 }
 
-.item a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0%;
-  height: 1px;
-  background-color: white;
-  transition: width 0.3s ease;
+span{
+    color: rgb(206, 233, 4);
 }
 
-.item a:hover::after {
-  width: 100%;
+.texto h2{
+    color:rgb(206, 233, 4) ;
+    font-size: 18px;
+    margin: 0px 0px 0px 50px;
+} 
+
+.texto h1{
+    color: white;
+    font-size: 50px;
+    width: 400px;
+    margin: 0px 50px;
+    font-weight: bolder;
 }
 
-.container,
-.container2,
-.container3 {
-  min-height: 120px;
-  padding: 20px;
-  border-radius: 13px;
-  background-color: rgba(51, 51, 51, 0.4);
+.texto p{
+    color: white;
+    width: 400px;
+    margin: 0px 50px;
+}
+
+.cadastro{
+    background-color: rgb(206, 233, 4);
+    padding: 9px;
+    border-radius: 50px;
+    color: black;
+    text-decoration: none
+}
+
+.navegaçao {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 20px;
-}
+  flex-direction: row;
+  justify-content: space-around;
 
-.container {
-  align-items: flex-start; 
-  width: 250px;
-  margin: 100px 0px 0px 250px;
-}
-
-.container h1,
-.container p,
-.container3 p {
-  margin: 0;
-  color: white;
-  font-family: poppins, sans-serif;
-}
-
-.container h1 {
-  font-weight: 600;
-  font-size: 18px;
-}
-
-.container img {
-  position: relative;
-  left: 180px;
-  width: 50px;
-  height: 50px;
-}
-
-.barra {
-  width: 80%;
-  height: 5px;
+  align-items: center;
   background-color: white;
-  border-radius: 2px;
-  margin-top: 2px;
 }
 
-.progresso {
-  height: 100%;
-  background-color: #e6ff2b;
-  border-radius: 2px;
+.pages{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;
 }
 
-.pages a {
-  text-decoration: none;
-  position: relative;
-  color: white;
-  font-family: Poppins, sans-serif;
-  margin: 0px 40px;
+.pages a{
+    color: black;
+    text-decoration: none;
+    position: relative;
 }
 
 .pages a::after {
@@ -205,35 +104,12 @@ main {
   left: 0;
   bottom: -2px;
   width: 0%;
-  height: 1px;
-  background-color: white;
+  height: 2px;
+  background-color: black;
   transition: width 0.3s ease;
 }
 
 .pages a:hover::after {
   width: 100%;
-}
-
-.navegaçao {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  padding: 6px;
-  align-items: center;
-  border-radius: 30px;
-  margin: 15px 80px;
-  background-color: rgba(51, 51, 51, 0.5);
-}
-
-.pages {
-  display: flex;
-  align-items: center;
-}
-
-.navegaçao h1 {
-  font-weight: 500;
-  font-family: Poppins, sans-serif;
-  color: white;
-  font-size: 25px;
 }
 </style>
