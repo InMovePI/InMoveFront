@@ -33,7 +33,7 @@ import { RouterLink } from 'vue-router'
       <h1>POR QUÊ ESCOLHER A <span>INMOVE</span>?</h1>
       <div class="topicos">
         <div class="container">
-          <img src="/public/icons8-alvo-32.png">
+          <img src="/public/icons8-alvo-32.png" />
           <h1>PROGRESSO</h1>
           <p>
             Acompanhe sua evolução com treinos planejados para desafiar seus limites e gerar
@@ -41,7 +41,7 @@ import { RouterLink } from 'vue-router'
           </p>
         </div>
         <div class="container">
-          <img src="/public/icons8-tríceps-32.png">
+          <img src="/public/icons8-tríceps-32.png" />
           <H1>TREINOS PERSONALIZADOS</H1>
           <p>
             Cada corpo é único. Por isso, nossos programas são criados com base nos seus objetivos -
@@ -51,7 +51,7 @@ import { RouterLink } from 'vue-router'
       </div>
       <div class="topicos">
         <div class="container">
-          <img src="/public/icons8-nutrição-32.png">
+          <img src="/public/icons8-nutrição-32.png" />
           <h1>ORIENTAÇÃO NUTRICIONAL</h1>
           <p>
             Potencialize seus resultados com orientações nutricionais que complementam o treino e
@@ -59,7 +59,7 @@ import { RouterLink } from 'vue-router'
           </p>
         </div>
         <div class="container">
-          <img src="/public/icons8-protect-32.png">
+          <img src="/public/icons8-protect-32.png" />
           <h1>AUTODEFESA E CONFIANÇA</h1>
           <p>
             Desenvolva força física e mental com atividades que unem preparo corporal e técnicas de
@@ -68,76 +68,37 @@ import { RouterLink } from 'vue-router'
         </div>
       </div>
     </div>
+
+    <div class="tres">
+      <p>Descubra o treino ideal para você</p>
+      <h1>NOSSOS SERVIÇOS:</h1>
+
+      <div class="serviços-container">
+        <div class="serviços">
+          <img src="/public/dias-de-fitness-linda-mulher-loira-na-academia-no-fim-de-semana.jpg" />
+          <h2>Força e Cardio</h2>
+          <p>Melhore o condicionamento físico</p>
+        </div>
+
+        <div class="serviços">
+          <img
+            src="/public/jovem-desportista-feliz-se-preparando-para-um-treino-e-amarrando-cadarco-no-centro-de-fitness.jpg"
+          />
+          <h2>Treinos femininos</h2>
+          <p>Treinos pensados para o corpo feminino, com foco em bem-estar, definição e saúde.</p>
+        </div>
+        
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
-.container img{
-  width: 60px;
-  height: 60px;
-  background-color: white;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  padding: 3px;
-}
-
 body {
   overflow-x: hidden;
 }
 
-.dois {
-  background-color: rgba(51, 51, 51, 1);
-  width: 100%;
-  padding: 0 80px 40px 80px;
-  box-sizing: border-box;
-}
-
-.topicos {
-  display: flex;
-  justify-content: space-around;
-  margin: 20px 0;
-  gap: 20px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.topicos + .topicos {
-  margin-top: 60px;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  width: 300px;
-  box-sizing: border-box;
-}
-
-.container h1 {
-  color: white;
-  font-size: 20px;
-  margin: 0 0 10px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; 
-}
-
-.container p {
-  color: white;
-  margin: 0;
-  width: 100%;
-  text-align: left;
-  white-space: normal; 
-  word-wrap: break-word;
-  line-height: 1.4;
-}
-
-.dois > h1 {
-  color: white;
-  margin: 20px 0 40px 50px;
-}
-
+/* SEÇÃO INTRO */
 main {
   display: flex;
   flex-direction: column;
@@ -184,14 +145,7 @@ span {
   margin: 0px 50px;
 }
 
-.cadastro {
-  background-color: rgb(206, 233, 4);
-  padding: 9px;
-  border-radius: 50px;
-  color: black;
-  text-decoration: none;
-}
-
+/* HEADER */
 .navegaçao {
   display: flex;
   flex-direction: row;
@@ -226,5 +180,138 @@ span {
 
 .pages a:hover::after {
   width: 100%;
+}
+
+.cadastro {
+  background-color: rgb(206, 233, 4);
+  padding: 9px;
+  border-radius: 50px;
+  color: black;
+  text-decoration: none;
+}
+
+/* SEÇÃO DOIS */
+.dois {
+  background-color: rgba(51, 51, 51, 1);
+  width: 100%;
+  padding: 0 80px 40px 80px;
+  box-sizing: border-box;
+}
+
+.dois h1 {
+  color: white;
+  margin: 20px 0px 60px 50px;
+}
+
+.topicos {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.topicos + .topicos {
+  margin-top: 60px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 300px;
+  box-sizing: border-box;
+}
+
+.container img {
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.container h1 {
+  color: white;
+  font-size: 20px;
+  margin: 0 0 10px 0;
+}
+
+.container p {
+  color: white;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  line-height: 1.4;
+}
+
+/* SEÇÃO TRES */
+.tres {
+  background-color: #1f1f1f;
+  padding: 60px 0;
+}
+
+.tres p {
+  color: rgb(206, 233, 4);
+  font-size: 20px;
+  margin-left: 128px;
+  margin-bottom: 4px;
+  margin-top: -10px;
+}
+
+.tres h1 {
+  color: white;
+  font-size: 28px;
+  margin-left: 128px;
+  margin-bottom: 25px;
+  margin-top: 0;
+}
+
+/* CONTAINER DE SERVIÇOS */
+.serviços-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 180px;
+  flex-wrap: wrap;
+}
+
+.serviços {
+  background-color: #2d2d2d;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  width: 300px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.serviços img {
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.serviços h2 {
+  color: rgb(206, 233, 4);
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.serviços p {
+  color: #dcdcdc;
+  font-size: 15px;
+  margin: 0 auto;
+  width: 90%;
+  text-align: center;
+  line-height: 1.4;
 }
 </style>
