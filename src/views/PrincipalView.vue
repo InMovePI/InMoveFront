@@ -33,6 +33,7 @@ import { RouterLink } from 'vue-router'
       <h1>POR QUÊ ESCOLHER A <span>INMOVE</span>?</h1>
       <div class="topicos">
         <div class="container">
+          <img src="/public/icons8-alvo-32.png">
           <h1>PROGRESSO</h1>
           <p>
             Acompanhe sua evolução com treinos planejados para desafiar seus limites e gerar
@@ -40,6 +41,7 @@ import { RouterLink } from 'vue-router'
           </p>
         </div>
         <div class="container">
+          <img src="/public/icons8-tríceps-32.png">
           <H1>TREINOS PERSONALIZADOS</H1>
           <p>
             Cada corpo é único. Por isso, nossos programas são criados com base nos seus objetivos -
@@ -49,6 +51,7 @@ import { RouterLink } from 'vue-router'
       </div>
       <div class="topicos">
         <div class="container">
+          <img src="/public/icons8-nutrição-32.png">
           <h1>ORIENTAÇÃO NUTRICIONAL</h1>
           <p>
             Potencialize seus resultados com orientações nutricionais que complementam o treino e
@@ -56,6 +59,7 @@ import { RouterLink } from 'vue-router'
           </p>
         </div>
         <div class="container">
+          <img src="/public/icons8-protect-32.png">
           <h1>AUTODEFESA E CONFIANÇA</h1>
           <p>
             Desenvolva força física e mental com atividades que unem preparo corporal e técnicas de
@@ -68,33 +72,73 @@ import { RouterLink } from 'vue-router'
 </template>
 
 <style scoped>
-.container p{
-  color: white;
-  width: 300px;
+.container img{
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.dois {
+  background-color: rgba(51, 51, 51, 1);
+  width: 100%;
+  padding: 0 80px 40px 80px;
+  box-sizing: border-box;
 }
 
 .topicos {
   display: flex;
   justify-content: space-around;
-  margin: 20px 0px;
+  margin: 20px 0;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.topicos + .topicos {
+  margin-top: 60px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 300px;
+  box-sizing: border-box;
 }
 
 .container h1 {
   color: white;
   font-size: 20px;
+  margin: 0 0 10px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
 
-.dois h1 {
+.container p {
   color: white;
-  margin: 20px 50px;
+  margin: 0;
+  width: 100%;
+  text-align: left;
+  white-space: normal; 
+  word-wrap: break-word;
+  line-height: 1.4;
 }
 
-.dois {
-  background-color: rgba(51, 51, 51, 1);
+.dois > h1 {
+  color: white;
+  margin: 20px 0 40px 50px;
 }
 
 main {
-  padding: 0 80px;
   display: flex;
   flex-direction: column;
 }
@@ -105,12 +149,15 @@ main {
   align-items: center;
   height: 100vh;
   width: 100%;
+  padding: 0 80px;
+  box-sizing: border-box;
 }
 
 img {
   width: 800px;
   height: 500px;
   border-radius: 30px;
+  max-width: 100%;
 }
 
 span {
