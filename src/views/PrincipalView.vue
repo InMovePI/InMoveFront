@@ -70,26 +70,42 @@ import { RouterLink } from 'vue-router'
     </div>
 
     <div class="tres">
-      <p>Descubra o treino ideal para você</p>
-      <h1>NOSSOS SERVIÇOS:</h1>
+  <p>Descubra o treino ideal para você</p>
+  <h1>NOSSOS SERVIÇOS:</h1>
 
-      <div class="serviços-container">
-        <div class="serviços">
-          <img src="/public/dias-de-fitness-linda-mulher-loira-na-academia-no-fim-de-semana.jpg" />
-          <h2>Força e Cardio</h2>
-          <p>Melhore o condicionamento físico</p>
-        </div>
-
-        <div class="serviços">
-          <img
-            src="/public/jovem-desportista-feliz-se-preparando-para-um-treino-e-amarrando-cadarco-no-centro-de-fitness.jpg"
-          />
-          <h2>Treinos femininos</h2>
-          <p>Treinos pensados para o corpo feminino, com foco em bem-estar, definição e saúde.</p>
-        </div>
-        
-      </div>
+  <!-- PRIMEIRA LINHA -->
+  <div class="serviços-container">
+    <div class="serviços">
+      <img src="/public/dias-de-fitness-linda-mulher-loira-na-academia-no-fim-de-semana.jpg" />
+      <h2>Força e Cardio</h2>
+      <p>Melhore o condicionamento físico</p>
     </div>
+
+    <div class="serviços">
+      <img
+        src="/public/jovem-desportista-feliz-se-preparando-para-um-treino-e-amarrando-cadarco-no-centro-de-fitness.jpg"
+      />
+      <h2>Treinos femininos</h2>
+      <p>Treinos pensados para o corpo feminino, com foco em bem-estar, definição e saúde.</p>
+    </div>
+  </div>
+
+  <!-- SEGUNDA LINHA -->
+  <div class="serviços-container" style="margin-top: 80px">
+    <div class="serviços">
+      <img src="/public/bodybuilder-training-arm-with-resistance-band.jpg" />
+      <h2>Yoga e Flexibilidade</h2>
+      <p>Práticas que unem corpo e mente, aumentando o equilíbrio, a flexibilidade e a paz interior.</p>
+    </div>
+
+    <div class="serviços">
+      <img src="/public/woman-helping-man-gym.jpg" />
+      <h2>Treinos em Grupo</h2>
+      <p>Atividades dinâmicas e motivadoras com grupos para incentivar o desempenho e a constância.</p>
+    </div>
+  </div>
+</div>
+
   </main>
 </template>
 
