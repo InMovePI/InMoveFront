@@ -7,6 +7,10 @@
       <div class="titulo">
         <h1>INMOVE</h1>
       </div>
+      <div class="texto">
+        <h1>Cadastre-se</h1>
+        <p>Informações pessoais</p>
+      </div>
 
       <div class="coluna">
         <input type="text" placeholder="Nome" class="input" />
@@ -15,22 +19,34 @@
         <input type="password" placeholder="Senha" class="input" />
         <input type="password" placeholder="Confirmar Senha" class="input" />
 
-        <router-link to="/">Continuar</router-link>
+        <router-link to="/informaçoes">Continuar</router-link>
       </div>
     </div>
 
     <div class="imagem">
-      <img src="/public/mulher-adulto-sinal-simbolo-familia.jpg"/>
+      <img src="/public/fotodocadastro.jpg"/>
     </div>
   </section>
 </template>
 
 <style scoped>
+.texto h1, p{
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  margin-left: 25px;
+}
+
+.texto p{
+  margin-top: -15px;
+  margin-bottom: 40px;
+  font-size: 18px;
+}
+
 .coluna a{
   display: flex;                
   justify-content: center;      
   align-items: center;          
-  width: 250px; 
+  width: 100px; 
   background-color: rgb(206, 233, 4);
   text-decoration: none;
   color: black;
@@ -45,9 +61,11 @@
 
 .titulo h1 {
   color:rgb(206, 233, 4);
-  font-family: poppins, sans-serif;
   display: flex;
   justify-content: center;
+  font-family: 'Jaro', sans-serif;
+  font-size: 40px;
+  letter-spacing: 0.5px;
 }
 
 .cadastro {
@@ -58,7 +76,7 @@
 .coluna {
   display: flex;
   flex-direction: column;
-  align-items: center; /* mantém tudo centralizado na metade esquerda */
+  align-items: center;
 }
 
 .input {
@@ -68,8 +86,8 @@
   margin-bottom: 30px;
   padding-left: 20px;
   font-size: 16px;
-  border-radius: 20px;
-  border: 1px solid black;
+  border-radius: 15px;
+  border: 2px solid rgb(206, 233, 4);
   box-sizing: border-box;
   font-family: poppins, sans-serif;
 }
