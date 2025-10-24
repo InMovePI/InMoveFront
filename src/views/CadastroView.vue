@@ -14,35 +14,63 @@
 
       <div class="coluna">
         <input type="text" placeholder="Nome" class="input" />
-        <input type="date" placeholder="Data de Nascimento" class="input" />
+
+        <div class="linha">
+          <input type="date" placeholder="Data de Nascimento" class="input pequeno" />
+          <select class="input pequeno">
+            <option value="">Gênero</option>
+            <option value="feminino">Feminino</option>
+            <option value="masculino">Masculino</option>
+            <option value="nao-informar">Prefiro não informar</option>
+          </select>
+        </div>
+
         <input type="email" placeholder="Email" class="input" />
         <input type="password" placeholder="Senha" class="input" />
-        <input type="password" placeholder="Confirmar Senha" class="input" />
+        <input type="password" placeholder="Confirmar Senha" class="input2" />
 
-        <router-link to="/informaçoes">Continuar</router-link>
+        <div class="login">
+          <p>Já tem uma conta? <router-link to="/login"> Faça login! </router-link></p>
+        </div>
+
+        <router-link class="button" to="/informaçoes">Continuar</router-link>
       </div>
     </div>
 
     <div class="imagem">
-      <img src="/public/fotodocadastro.jpg"/>
+      <img src="/public/fotodocadastro.jpg" />
     </div>
   </section>
 </template>
 
 <style scoped>
-.texto h1, p{
+.login a{
+  color: rgb(206, 233, 4);
+  text-decoration: underline;
+  margin-left: 3px;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.login p{
+  font-size: 15px;
+}
+
+.texto h1, p {
   font-family: 'Poppins', sans-serif;
   color: white;
+  display: flex;
+  justify-content: flex-start;
   margin-left: 25px;
 }
 
-.texto p{
+.texto p {
   margin-top: -15px;
   margin-bottom: 40px;
   font-size: 18px;
 }
 
-.coluna a{
+.button {
   display: flex;                
   justify-content: center;      
   align-items: center;          
@@ -55,12 +83,12 @@
   transition: background-color 1s;
 }
 
-.coluna a:hover {
-  background-color:rgb(172, 194, 5);
+.button:hover {
+  background-color: rgb(172, 194, 5);
 }
 
 .titulo h1 {
-  color:rgb(206, 233, 4);
+  color: rgb(206, 233, 4);
   display: flex;
   justify-content: center;
   font-family: 'Jaro', sans-serif;
@@ -86,10 +114,37 @@
   margin-bottom: 30px;
   padding-left: 20px;
   font-size: 16px;
+  color: white;
+  background-color: #202020;
   border-radius: 15px;
   border: 2px solid rgb(206, 233, 4);
   box-sizing: border-box;
   font-family: poppins, sans-serif;
+}
+
+.input2 {
+  display: block;
+  width: 400px;
+  padding: 10px;
+  padding-left: 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #202020;
+  border-radius: 15px;
+  border: 2px solid rgb(206, 233, 4);
+  box-sizing: border-box;
+  font-family: poppins, sans-serif;
+}
+
+.linha {
+  display: flex;
+  gap: 20px;
+  width: 400px;
+  justify-content: space-between;
+}
+
+.pequeno {
+  width: 190px;
 }
 
 select.input {
