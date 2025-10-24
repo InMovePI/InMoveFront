@@ -26,14 +26,13 @@
         </div>
 
         <input type="email" placeholder="Email" class="input" />
-        <input type="password" placeholder="Senha" class="input" />
-        <input type="password" placeholder="Confirmar Senha" class="input2" />
+        <input type="password" placeholder="Senha" class="input2" />
 
         <div class="login">
           <p>Já tem uma conta? <router-link to="/login"> Faça login! </router-link></p>
         </div>
 
-        <router-link class="button" to="/informaçoes">Continuar</router-link>
+        <router-link class="button" to="/informacoes">Continuar</router-link>
       </div>
     </div>
 
@@ -55,13 +54,17 @@
 .login p{
   font-size: 15px;
 }
-
 .texto h1, p {
   font-family: 'Poppins', sans-serif;
   color: white;
   display: flex;
   justify-content: flex-start;
-  margin-left: 25px;
+}
+
+.texto h1{
+  margin-top: -10px;
+  font-size: 20px;
+  font-family: poppins, sans-serif;
 }
 
 .texto p {

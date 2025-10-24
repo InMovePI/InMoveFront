@@ -22,8 +22,8 @@ const router = createRouter({
       component: CadastroView,
     },
     {
-      path: '/informaçoes',
-      name: 'informaçoes',
+      path: '/informacoes',
+      name: 'informacoes',
       component: InformaçõesView,
     },
     {

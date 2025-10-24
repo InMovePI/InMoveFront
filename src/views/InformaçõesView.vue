@@ -67,7 +67,7 @@ onBeforeUnmount(() => {
 <template>
   <section class="cadastro">
     <div class="imagem">
-      <img src="/public/homem-de-vista-frontal-malhando-com-halteres.jpg" />
+      <img src="/homem-de-vista-frontal-malhando-com-halteres.jpg" />
     </div>
 
     <div class="formulario">
@@ -275,6 +275,10 @@ p {
   justify-content: flex-end;
 }
 
+.texto h1{
+  font-size: 20px;
+  font-family: poppins, sans-serif;
+}
 .texto p {
   margin-top: -15px;
   margin-bottom: 40px;
