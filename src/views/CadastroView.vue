@@ -1,4 +1,52 @@
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+// Dados do formulário
+const nome = ref('');
+const dataNascimento = ref('');
+const genero = ref('');
+const email = ref('');
+const senha = ref('');
+const erro = ref('');
+const loading = ref(false);
+
+const handleContinuar = () => {
+  // Validações básicas
+  if (!nome.value || !dataNascimento.value || !genero.value || !email.value || !senha.value) {
+    erro.value = 'Por favor, preencha todos os campos';
+    return;
+  }
+
+  // Validação de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.value)) {
+    erro.value = 'Email inválido';
+    return;
+  }
+
+  // Validação de senha (mínimo 6 caracteres)
+  if (senha.value.length < 6) {
+    erro.value = 'A senha deve ter no mínimo 6 caracteres';
+    return;
+  }
+
+  // Salvar dados no localStorage
+  const dadosCadastro = {
+    name: nome.value,
+    data_nascimento: dataNascimento.value,
+    genero: genero.value,
+    email: email.value,
+    password: senha.value
+  };
+
+  localStorage.setItem('dadosCadastro', JSON.stringify(dadosCadastro));
+  
+  // Redirecionar para página de informações
+  router.push('/informacoes');
+};
 </script>
 
 <template>
@@ -11,31 +59,57 @@
         <h1>Cadastre-se</h1>
         <p>Informações pessoais</p>
       </div>
+      
+      <!-- Mensagem de erro -->
+      <div v-if="erro" class="erro">
+        {{ erro }}
+      </div>
 
       <div class="coluna">
-        <input type="text" placeholder="Nome" class="input" />
-
+        <input 
+          v-model="nome"
+          type="text" 
+          placeholder="Nome" 
+          class="input" 
+        />
         <div class="linha">
-          <input type="date" placeholder="Data de Nascimento" class="input pequeno" />
-          <select class="input pequeno">
+          <input 
+            v-model="dataNascimento"
+            type="date" 
+            placeholder="Data de Nascimento" 
+            class="input pequeno" 
+          />
+          <select v-model="genero" class="input pequeno">
             <option value="">Gênero</option>
-            <option value="feminino">Feminino</option>
-            <option value="masculino">Masculino</option>
-            <option value="nao-informar">Prefiro não informar</option>
+            <option value="F">Feminino</option>
+            <option value="M">Masculino</option>
+            <option value="O">Prefiro não informar</option>
           </select>
         </div>
-
-        <input type="email" placeholder="Email" class="input" />
-        <input type="password" placeholder="Senha" class="input2" />
-
+        <input 
+          v-model="email"
+          type="email" 
+          placeholder="Email" 
+          class="input" 
+        />
+        <input 
+          v-model="senha"
+          type="password" 
+          placeholder="Senha" 
+          class="input2" 
+        />
         <div class="login">
           <p>Já tem uma conta? <router-link to="/login"> Faça login! </router-link></p>
         </div>
-
-        <router-link class="button" to="/informacoes">Continuar</router-link>
+        <button 
+          @click="handleContinuar" 
+          class="button"
+          :disabled="loading"
+        >
+          {{ loading ? 'Carregando...' : 'Continuar' }}
+        </button>
       </div>
     </div>
-
     <div class="imagem">
       <img src="/public/fotodocadastro.jpg" />
     </div>
@@ -43,7 +117,17 @@
 </template>
 
 <style scoped>
-.login a{
+.erro {
+  background-color: #ff4444;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.login a {
   color: rgb(206, 233, 4);
   text-decoration: underline;
   margin-left: 3px;
@@ -51,9 +135,10 @@
   font-size: 15px;
 }
 
-.login p{
+.login p {
   font-size: 15px;
 }
+
 .texto h1, p {
   font-family: 'Poppins', sans-serif;
   color: white;
@@ -61,7 +146,7 @@
   justify-content: flex-start;
 }
 
-.texto h1{
+.texto h1 {
   margin-top: -10px;
   font-size: 20px;
   font-family: poppins, sans-serif;
@@ -74,20 +159,29 @@
 }
 
 .button {
-  display: flex;                
-  justify-content: center;      
-  align-items: center;          
-  width: 100px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
   background-color: rgb(206, 233, 4);
   text-decoration: none;
   color: black;
   padding: 15px;
   border-radius: 30px;
   transition: background-color 1s;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
 }
 
 .button:hover {
   background-color: rgb(172, 194, 5);
+}
+
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .titulo h1 {

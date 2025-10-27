@@ -1,21 +1,26 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
+import api from '@/services/api';
 
-function limitarAltura(event) {
-  const min = 0
-  const max = 250
-  let valor = Number(event.target.value)
+const router = useRouter();
 
-  if (valor < min) valor = min
-  if (valor > max) valor = max
+// Dados do formulário
+const pesoAtual = ref('');
+const altura = ref('');
+const metaPeso = ref('');
+const objetivo = ref('');
+const diasTreino = ref([]);
+const grupoFoco = ref([]);
+const preferencias = ref('');
 
-  event.target.value = valor
-}
+// Estados
+const erro = ref('');
+const loading = ref(false);
 
-const aberto = ref(false)
-const diasSelecionados = ref([])
-const selectContainer = ref(null)
-
+// Multi-select dias da semana
+const aberto = ref(false);
+const selectContainer = ref(null);
 const dias = [
   'Segunda-Feira',
   'Terça-Feira',
@@ -24,44 +29,135 @@ const dias = [
   'Sexta-Feira',
   'Sábado',
   'Domingo'
-]
+];
+
+// Multi-select grupo muscular
+const abertoGrupo = ref(false);
+const grupoContainer = ref(null);
+const grupos = ['Inferiores', 'Superiores'];
+
+function limitarAltura(event) {
+  const min = 0;
+  const max = 250;
+  let valor = Number(event.target.value);
+  if (valor < min) valor = min;
+  if (valor > max) valor = max;
+  event.target.value = valor;
+}
 
 function toggleDia(dia) {
-  if (diasSelecionados.value.includes(dia)) {
-    diasSelecionados.value = diasSelecionados.value.filter((d) => d !== dia)
+  if (diasTreino.value.includes(dia)) {
+    diasTreino.value = diasTreino.value.filter((d) => d !== dia);
   } else {
-    diasSelecionados.value.push(dia)
+    diasTreino.value.push(dia);
   }
 }
 
-const abertoGrupo = ref(false)
-const grupoSelecionados = ref([])
-const grupoContainer = ref(null)
-const grupos = ['Inferiores', 'Superiores']
-
 function toggleGrupo(opcao) {
-  if (grupoSelecionados.value.includes(opcao)) {
-    grupoSelecionados.value = grupoSelecionados.value.filter((g) => g !== opcao)
+  if (grupoFoco.value.includes(opcao)) {
+    grupoFoco.value = grupoFoco.value.filter((g) => g !== opcao);
   } else {
-    grupoSelecionados.value.push(opcao)
+    grupoFoco.value.push(opcao);
   }
 }
 
 function handleClickFora(event) {
   if (selectContainer.value && !selectContainer.value.contains(event.target)) {
-    aberto.value = false
+    aberto.value = false;
   }
   if (grupoContainer.value && !grupoContainer.value.contains(event.target)) {
-    abertoGrupo.value = false
+    abertoGrupo.value = false;
   }
 }
 
+const handleCadastro = async () => {
+  // Validações
+  if (!pesoAtual.value || !altura.value || !metaPeso.value || !objetivo.value) {
+    erro.value = 'Por favor, preencha todos os campos obrigatórios';
+    return;
+  }
+
+  if (diasTreino.value.length === 0) {
+    erro.value = 'Selecione pelo menos um dia de treino';
+    return;
+  }
+
+  if (grupoFoco.value.length === 0) {
+    erro.value = 'Selecione pelo menos um grupo muscular';
+    return;
+  }
+
+  // Recuperar dados da primeira etapa
+  const dadosCadastroStr = localStorage.getItem('dadosCadastro');
+  
+  if (!dadosCadastroStr) {
+    erro.value = 'Dados do cadastro não encontrados. Retorne à página anterior.';
+    return;
+  }
+
+  const dadosCadastro = JSON.parse(dadosCadastroStr);
+
+  // Montar objeto completo para enviar
+  const dadosCompletos = {
+    name: dadosCadastro.name,
+    email: dadosCadastro.email,
+    password: dadosCadastro.password,
+    data_nascimento: dadosCadastro.data_nascimento,
+    genero: dadosCadastro.genero,
+    altura_cm: parseInt(altura.value),
+    peso_kg: parseFloat(pesoAtual.value),
+    preferencias: preferencias.value || 'outro',
+    // Campos extras (não estão no model User, mas podem ser úteis)
+    meta_peso: parseFloat(metaPeso.value),
+    objetivo: objetivo.value,
+    dias_treino: diasTreino.value.join(','),
+    grupo_foco: grupoFoco.value.join(',')
+  };
+
+  loading.value = true;
+  erro.value = '';
+
+  try {
+    const response = await api.post('/api/usuarios/', dadosCompletos);
+    
+    // Salvar token se a API retornar
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
+    
+    // Salvar dados do usuário
+    localStorage.setItem('user', JSON.stringify(response.data));
+    
+    // Limpar dados temporários do cadastro
+    localStorage.removeItem('dadosCadastro');
+    
+    // Redirecionar para home/dashboard
+    router.push('/');
+    
+  } catch (err) {
+    console.error('Erro ao cadastrar:', err);
+    erro.value = err.response?.data?.message || 
+                 err.response?.data?.detail ||
+                 'Erro ao cadastrar. Tente novamente.';
+  } finally {
+    loading.value = false;
+  }
+};
+
 onMounted(() => {
-  document.addEventListener('click', handleClickFora)
-})
+  document.addEventListener('click', handleClickFora);
+  
+  // Verificar se tem dados do cadastro
+  const dadosCadastroStr = localStorage.getItem('dadosCadastro');
+  if (!dadosCadastroStr) {
+    alert('Complete o cadastro primeiro!');
+    router.push('/cadastro');
+  }
+});
+
 onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClickFora)
-})
+  document.removeEventListener('click', handleClickFora);
+});
 </script>
 
 <template>
@@ -79,32 +175,49 @@ onBeforeUnmount(() => {
         <p>Informações de cadastro</p>
       </div>
 
+      <!-- Mensagem de erro -->
+      <div v-if="erro" class="erro">
+        {{ erro }}
+      </div>
+
       <div class="coluna">
         <div class="linha">
-          <input type="number" placeholder="Peso atual (kg)" class="input mini" />
+          <input 
+            v-model="pesoAtual"
+            type="number" 
+            placeholder="Peso atual (kg)" 
+            class="input mini" 
+          />
           <input
+            v-model="altura"
             type="number"
             @input="limitarAltura"
             placeholder="Altura (cm)"
             class="input mini"
           />
-          <input type="number" placeholder="Meta de peso (kg)" class="input mini" />
+          <input 
+            v-model="metaPeso"
+            type="number" 
+            placeholder="Meta de peso (kg)" 
+            class="input mini" 
+          />
         </div>
 
-        <select name="Objetivo" class="input">
-          <option>Hipertrofia</option>
-          <option>Emagrecimento</option>
-          <option>Definição Muscular</option>
+        <select v-model="objetivo" class="input">
+          <option value="">Selecione um objetivo</option>
+          <option value="hipertrofia">Hipertrofia</option>
+          <option value="emagrecimento">Emagrecimento</option>
+          <option value="definicao">Definição Muscular</option>
         </select>
 
         <div class="select-container" ref="selectContainer">
           <div class="select-input" @click="aberto = !aberto">
-            <span class="texto" :class="{ placeholder: diasSelecionados.length === 0 }">
+            <span class="texto" :class="{ placeholder: diasTreino.length === 0 }">
               {{
-                diasSelecionados.length > 0
-                  ? diasSelecionados.join(', ').length > 30
-                    ? diasSelecionados.join(', ').slice(0, 30) + '...'
-                    : diasSelecionados.join(', ')
+                diasTreino.length > 0
+                  ? diasTreino.join(', ').length > 30
+                    ? diasTreino.join(', ').slice(0, 30) + '...'
+                    : diasTreino.join(', ')
                   : 'Dias da semana que deseja treinar'
               }}
             </span>
@@ -116,7 +229,7 @@ onBeforeUnmount(() => {
               v-for="dia in dias"
               :key="dia"
               @click.stop="toggleDia(dia)"
-              :class="{ selecionado: diasSelecionados.includes(dia) }"
+              :class="{ selecionado: diasTreino.includes(dia) }"
             >
               {{ dia }}
             </li>
@@ -125,12 +238,12 @@ onBeforeUnmount(() => {
 
         <div class="select-container" ref="grupoContainer">
           <div class="select-input2" @click="abertoGrupo = !abertoGrupo">
-            <span class="texto" :class="{ placeholder: grupoSelecionados.length === 0 }">
+            <span class="texto" :class="{ placeholder: grupoFoco.length === 0 }">
               {{
-                grupoSelecionados.length > 0
-                  ? grupoSelecionados.join(', ').length > 30
-                    ? grupoSelecionados.join(', ').slice(0, 30) + '...'
-                    : grupoSelecionados.join(', ')
+                grupoFoco.length > 0
+                  ? grupoFoco.join(', ').length > 30
+                    ? grupoFoco.join(', ').slice(0, 30) + '...'
+                    : grupoFoco.join(', ')
                   : 'Grupo muscular de foco'
               }}
             </span>
@@ -142,7 +255,7 @@ onBeforeUnmount(() => {
               v-for="opcao in grupos"
               :key="opcao"
               @click.stop="toggleGrupo(opcao)"
-              :class="{ selecionado: grupoSelecionados.includes(opcao) }"
+              :class="{ selecionado: grupoFoco.includes(opcao) }"
             >
               {{ opcao }}
             </li>
@@ -153,14 +266,30 @@ onBeforeUnmount(() => {
           <p>Já tem uma conta? <router-link to="/login"> Faça login! </router-link></p>
         </div>
 
-        <router-link class="button" to="/">Continuar</router-link>
+        <button 
+          @click="handleCadastro" 
+          class="button"
+          :disabled="loading"
+        >
+          {{ loading ? 'Cadastrando...' : 'Continuar' }}
+        </button>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.login a{
+.erro {
+  background-color: #ff4444;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.login a {
   color: rgb(206, 233, 4);
   text-decoration: underline;
   margin-left: 3px;
@@ -168,7 +297,7 @@ onBeforeUnmount(() => {
   font-size: 15px;
 }
 
-.login p{
+.login p {
   font-size: 15px;
 }
 
@@ -275,7 +404,7 @@ p {
   justify-content: flex-end;
 }
 
-.texto h1{
+.texto h1 {
   font-size: 20px;
   font-family: poppins, sans-serif;
 }
@@ -289,17 +418,26 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
+  width: 120px;
   background-color: rgb(206, 233, 4);
   text-decoration: none;
   color: black;
   padding: 15px;
   border-radius: 30px;
   transition: background-color 1s;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
 }
 
 .button:hover {
   background-color: rgb(172, 194, 5);
+}
+
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .titulo h1 {

@@ -21,7 +21,7 @@
         <a href="#" class="forgot-password">Esqueceu a senha?</a>
      </div>
      <router-link to="/" class="button">Continuar</router-link>
-     <p class="cadastro">Não tem uma conta? <router-link to="/"> Cadastre-se! </router-link></p>
+     <p class="cadastro">Não tem uma conta? <router-link to="cadastro"> Cadastre-se! </router-link></p>
     </div>
   </div>
 </template>
