@@ -10,12 +10,10 @@ const email = ref('');
 const senha = ref('');
 const manterConectado = ref(false);
 
-// Estados
 const erro = ref('');
 const loading = ref(false);
 
 const handleLogin = async () => {
-  // Validações
   if (!email.value || !senha.value) {
     erro.value = 'Por favor, preencha email e senha';
     return;
@@ -31,11 +29,9 @@ const handleLogin = async () => {
       password: senha.value
     });
 
-    // Salvar tokens
     localStorage.setItem('access_token', response.data.access);
     localStorage.setItem('refresh_token', response.data.refresh);
 
-    // Buscar dados do usuário
     try {
       const userResponse = await api.get('/api/usuarios/', {
         headers: {
@@ -43,7 +39,7 @@ const handleLogin = async () => {
         }
       });
       
-      // Encontrar usuário pelo email
+
       const user = userResponse.data.results.find(u => u.email === email.value);
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
@@ -52,7 +48,6 @@ const handleLogin = async () => {
       console.error('Erro ao buscar dados do usuário:', err);
     }
 
-    // Redirecionar para home
     router.push('/');
 
   } catch (err) {
@@ -70,7 +65,6 @@ const handleLogin = async () => {
   }
 };
 
-// Permitir login com Enter
 const handleKeyPress = (event) => {
   if (event.key === 'Enter') {
     handleLogin();
@@ -87,7 +81,6 @@ const handleKeyPress = (event) => {
       <h1>INMOVE</h1>
       <h2>Login</h2>
 
-      <!-- Mensagem de erro -->
       <div v-if="erro" class="erro">
         {{ erro }}
       </div>
