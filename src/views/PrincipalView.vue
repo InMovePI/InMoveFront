@@ -8,7 +8,7 @@ import { RouterLink } from 'vue-router'
       <h1>INMOVE</h1>
       <div class="pages">
         <router-link><span>Home</span></router-link>
-        <router-link>Painel de treinamento</router-link>
+        <router-link to="/dashboard">Dashboard</router-link>
         <router-link>Explorar</router-link>
         <router-link to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
       </div>
@@ -183,7 +183,7 @@ span {
   position: relative;
 }
 
-.pages a::after {
+.pages a:not(.cadastro)::after {
   content: '';
   position: absolute;
   left: 0;
@@ -194,7 +194,7 @@ span {
   transition: width 0.3s ease;
 }
 
-.pages a:hover::after {
+.pages a:not(.cadastro):hover::after {
   width: 100%;
 }
 
