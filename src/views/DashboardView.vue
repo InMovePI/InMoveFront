@@ -7,7 +7,7 @@
       <div class="pages">
         <router-link to="/">Home</router-link>
         <router-link to="/dashboard"><span>Dashboard</span></router-link>
-        <router-link>Explorar</router-link>
+        <router-link to="/">Explorar</router-link>
         <router-link to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
       </div>
     </div>

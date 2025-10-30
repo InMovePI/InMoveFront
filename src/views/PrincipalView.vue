@@ -7,9 +7,9 @@ import { RouterLink } from 'vue-router'
     <div class="navegaçao">
       <h1>INMOVE</h1>
       <div class="pages">
-        <router-link><span>Home</span></router-link>
+        <router-link to="/"><span>Home</span></router-link>
         <router-link to="/dashboard">Dashboard</router-link>
-        <router-link>Explorar</router-link>
+        <router-link to="/">Explorar</router-link>
         <router-link to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
       </div>
     </div>
