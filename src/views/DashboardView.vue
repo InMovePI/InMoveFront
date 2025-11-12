@@ -12,9 +12,55 @@
       </div>
     </div>
   </header>
+
+  <main>
+    <div class="intro">
+      <div class="texto">
+        <h1>Metas diárias:</h1>
+        <p>
+          Mantenha o foco nos seus objetivos! Cada progresso conta — complete suas metas e veja sua
+          evolução acontecer em tempo real.
+        </p>
+      </div>
+
+      <img src="/public/young-athletic-woman-exercising-situps-with-weight-plate-gym.jpg" />
+    </div>
+
+    <div class="cards">
+      <div class="card1">
+        <h1>Treino</h1>
+        <p>45min</p>
+        <router-link to="/">Ver plano de treinos</router-link>
+      </div>
+
+      <div class="card2">
+        <h1>Meta de água</h1>
+        <p>2,5L</p>
+        <router-link to="/">Ver plano alimentar</router-link>
+      </div>
+
+      <div class="card3">
+        <h1>Meta calórica</h1>
+        <p>1700 cal</p>
+        <router-link to="/">Ver plano alimentar</router-link>
+      </div>
+    </div>
+  </main>
 </template>
 
 <style scoped>
+.cards{
+  display: flex;
+  justify-content: space-around;
+  font-family: Poppins, sans-serif;
+  color: white;
+}
+
+.card1, .card2, .card3 {
+    border: white solid 1px;
+    padding: 20px;
+}
+
 body {
   overflow-x: hidden;
 }
@@ -34,6 +80,11 @@ span {
   justify-content: space-around;
   align-items: center;
   background-color: white;
+  padding: 10px 0;
+}
+
+.navegaçao h1 {
+  margin: 0;
 }
 
 .pages {
@@ -70,5 +121,53 @@ span {
   border-radius: 50px;
   color: black;
   text-decoration: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+.intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  padding: 0 80px;
+  box-sizing: border-box;
+  margin-top: -40px;
+}
+
+img {
+  width: 700px;
+  height: 450px;
+  border-radius: 30px;
+  max-width: 100%;
+}
+
+span {
+  color: rgb(206, 233, 4);
+}
+
+.texto h2 {
+  color: rgb(206, 233, 4);
+  font-size: 18px;
+  margin: 0px 0px 10px 50px;
+}
+
+.texto h1 {
+  color: white;
+  font-size: 50px;
+  width: 400px;
+  margin: 0px 50px 15px 50px;
+  font-weight: bolder;
+}
+
+.texto p {
+  color: white;
+  width: 400px;
+  margin: 0px 50px;
+  font-size: 19px;
 }
 </style>
