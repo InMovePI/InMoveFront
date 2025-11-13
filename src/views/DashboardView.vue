@@ -49,6 +49,21 @@
 </template>
 
 <style scoped>
+.cards a{
+  color: black;
+  text-decoration: none;
+  background-color:rgb(206, 233, 4);
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.cards a:hover{
+  background-color: rgb(180, 202, 12);
+}
+
 .cards{
   display: flex;
   justify-content: space-around;
@@ -56,9 +71,15 @@
   color: white;
 }
 
+
 .card1, .card2, .card3 {
     border: white solid 1px;
+    border-radius: 20px;
     padding: 20px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 body {
