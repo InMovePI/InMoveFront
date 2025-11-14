@@ -45,10 +45,59 @@
         <router-link to="/">Ver plano alimentar</router-link>
       </div>
     </div>
+
+    <div class="treinos">
+      <div>
+      <h1>Últimos treinos realizados:</h1>
+    </div>
+      <div class="images">
+        <div class="cardImg">
+          <img src="/public/desportista-em-um-treinamento-de-sportswear-em-uma-academia.jpg" alt="">
+        </div>
+        <div class="cardImg">
+          <img src="/public/vista-de-angulo-baixo-homem-de-construcao-muscular-irreconhecivel-se-preparando-para-levantar-uma-barra-em-um-clube-de-saude.jpg" alt="">
+        </div>
+
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
+.images img{
+  width: 480px;
+  height: 300px;
+}
+
+.images{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  gap: 20rem;
+}
+.cardImg img{
+  filter: blur(1.5px);
+}
+
+.treinos{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.treinos h1{
+  font-family: Poppins, sans-serif;
+  color: white;
+
+}
+
+.cards p{
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
 .cards a{
   color: black;
   text-decoration: none;
@@ -101,7 +150,7 @@ span {
   justify-content: space-around;
   align-items: center;
   background-color: white;
-  padding: 10px 0;
+  height: 90.8px;
 }
 
 .navegaçao h1 {
