@@ -3,17 +3,17 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <header>
-    <div class="navegaçao">
-      <h1>INMOVE</h1>
-      <div class="pages">
-        <router-link to="/"><span>Home</span></router-link>
-        <router-link to="/dashboard">Dashboard</router-link>
-        <router-link to="/">Explorar</router-link>
-        <router-link to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
-      </div>
+<header>
+  <div class="navegaçao">
+    <h1>INMOVE</h1>
+    <div class="pages">
+      <router-link to="/"><span>Home</span></router-link>
+      <router-link to="/dashboard">Dashboard</router-link>
+      <router-link to="/">Explorar</router-link>
+      <router-link to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
     </div>
-  </header>
+  </div>
+</header>
 
   <main>
     <div class="intro">
@@ -91,7 +91,7 @@ import { RouterLink } from 'vue-router'
   </div>
 
   <!-- SEGUNDA LINHA -->
-  <div class="serviços-container" style="margin-top: 80px">
+  <div class="serviços-container segunda-linha">
     <div class="serviços">
       <img src="/public/bodybuilder-training-arm-with-resistance-band.jpg" />
       <h2>Yoga e Flexibilidade</h2>
@@ -168,6 +168,9 @@ span {
   justify-content: space-around;
   align-items: center;
   background-color: white;
+  padding: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .pages {
@@ -175,12 +178,14 @@ span {
   flex-direction: row;
   align-items: center;
   gap: 50px;
+  flex-wrap: wrap;
 }
 
 .pages a {
   color: black;
   text-decoration: none;
   position: relative;
+  white-space: nowrap;
 }
 
 .pages a:not(.cadastro)::after {
@@ -295,6 +300,10 @@ span {
   flex-wrap: wrap;
 }
 
+.serviços-container.segunda-linha {
+  margin-top: 80px;
+}
+
 .serviços {
   background-color: #2d2d2d;
   padding: 20px;
@@ -329,5 +338,270 @@ span {
   width: 90%;
   text-align: center;
   line-height: 1.4;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+
+/* Tablets (768px - 1024px) */
+@media (max-width: 1330px) {
+  /* Header */
+  .navegaçao {
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  
+  .pages {
+    gap: 30px;
+    justify-content: center;
+  }
+
+  /* Intro */
+  .intro {
+    padding: 0 40px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    height: auto;
+    min-height: 100vh;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .intro img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+  }
+
+  .texto h1 {
+    font-size: 40px;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .texto h2 {
+    text-align: center;
+    margin: 0 0 10px 0;
+  }
+
+  .texto p {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0 0 0;
+    max-width: 600px;
+  }
+
+  /* Seção Dois */
+  .dois {
+    padding: 40px 40px;
+  }
+
+  .dois h1 {
+    margin: 20px 0 40px 0;
+    text-align: center;
+  }
+
+  .topicos {
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .container {
+    width: 45%;
+    min-width: 280px;
+  }
+
+  /* Seção Tres */
+  .tres p,
+  .tres h1 {
+    margin-left: 40px;
+  }
+
+  .serviços-container {
+    gap: 40px;
+  }
+}
+
+/* Mobile (até 768px) */
+@media (max-width: 768px) {
+  /* Header - mantém horizontal */
+  .navegaçao h1 {
+    font-size: 20px;
+  }
+  
+  .pages {
+    gap: 20px;
+  }
+  
+  .pages a {
+    font-size: 14px;
+  }
+  
+  .cadastro {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  /* Intro */
+  .intro {
+    padding: 20px;
+    height: auto;
+    min-height: auto;
+  }
+
+  .intro img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .texto h1 {
+    font-size: 32px;
+    width: 100%;
+  }
+
+  .texto h2 {
+    font-size: 16px;
+  }
+
+  .texto p {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  /* Seção Dois */
+  .dois {
+    padding: 30px 20px;
+  }
+
+  .dois h1 {
+    font-size: 24px;
+    margin: 20px 0 30px 0;
+  }
+
+  .topicos {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .topicos + .topicos {
+    margin-top: 30px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 400px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .container img {
+    margin: 0 auto 10px;
+  }
+
+  .container h1 {
+    text-align: center;
+  }
+
+  .container p {
+    text-align: center;
+  }
+
+  /* Seção Tres */
+  .tres {
+    padding: 40px 20px;
+  }
+
+  .tres p {
+    margin-left: 0;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .tres h1 {
+    margin-left: 0;
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .serviços-container {
+    gap: 30px;
+    padding: 0 10px;
+  }
+
+  .serviços-container.segunda-linha {
+    margin-top: 30px;
+  }
+
+  .serviços {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+/* Mobile pequeno (até 480px) */
+@media (max-width: 480px) {
+  .navegaçao h1 {
+    font-size: 18px;
+  }
+
+  .pages {
+    gap: 10px;
+  }
+
+  .pages a {
+    font-size: 12px;
+  }
+
+  .cadastro {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .texto h1 {
+    font-size: 28px;
+  }
+
+  .texto h2 {
+    font-size: 14px;
+  }
+
+  .texto p {
+    font-size: 13px;
+  }
+
+  .dois h1 {
+    font-size: 20px;
+  }
+
+  .container h1 {
+    font-size: 18px;
+  }
+
+  .container p {
+    font-size: 14px;
+  }
+
+  .tres h1 {
+    font-size: 20px;
+  }
+
+  .tres p {
+    font-size: 16px;
+  }
+
+  .serviços {
+    padding: 15px;
+  }
+
+  .serviços h2 {
+    font-size: 18px;
+  }
+
+  .serviços p {
+    font-size: 14px;
+  }
 }
 </style>
