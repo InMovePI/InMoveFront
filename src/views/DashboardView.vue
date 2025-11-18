@@ -47,17 +47,107 @@
     </div>
 
     <div class="treinos">
-      <div>
+      <div class="treinos-header">
         <h1>Últimos treinos realizados:</h1>
+        <a href="#" class="ver-todos">Ver todos</a>
       </div>
       <div class="images">
         <div class="cardImg">
           <img src="/public/desportista-em-um-treinamento-de-sportswear-em-uma-academia.jpg" alt="">
+          <div class="cardImg-overlay">
+            <div class="cardImg-info">
+              <p class="exercicios">8 exercícios/ 1h30/ 380cal</p>
+              <h3>Cardio & Abdômen</h3>
+              <span class="data">Realizado em 22/10</span>
+            </div>
+            <button class="cardImg-btn">></button>
+          </div>
         </div>
         <div class="cardImg">
           <img src="/public/vista-de-angulo-baixo-homem-de-construcao-muscular-irreconhecivel-se-preparando-para-levantar-uma-barra-em-um-clube-de-saude.jpg" alt="">
+          <div class="cardImg-overlay">
+            <div class="cardImg-info">
+              <p class="exercicios">9 exercícios/ 1h30/ 400cal</p>
+              <h3>Peito & Tríceps</h3>
+              <span class="data">Realizado em 23/10</span>
+            </div>
+            <button class="cardImg-btn">></button>
+          </div>
         </div>
       </div>
+      <button class="ir-treinos">Ir para página de treinos ></button>
+    </div>
+
+    <div class="refeicoes">
+      <h1>Últimas refeições registradas:</h1>
+      <div class="refeicoes-cards">
+        <div class="refeicao-card">
+          <div class="refeicao-header">
+            <h3>Café da manhã</h3>
+            <p class="horario">🕐 8:00</p>
+          </div>
+          <div class="macros">
+            <div class="macro-item">
+              <p class="macro-label">Carboidratos</p>
+              <p class="macro-value">43g</p>
+            </div>
+            <div class="macro-item">
+              <p class="macro-label">Proteínas</p>
+              <p class="macro-value">15g</p>
+            </div>
+            <div class="macro-item">
+              <p class="macro-label">Gorduras</p>
+              <p class="macro-value">8g</p>
+            </div>
+          </div>
+          <p class="calorias">300kcal</p>
+        </div>
+
+        <div class="refeicao-card">
+          <div class="refeicao-header">
+            <h3>Almoço</h3>
+            <p class="horario">🕐 12:30</p>
+          </div>
+          <div class="macros">
+            <div class="macro-item">
+              <p class="macro-label">Carboidratos</p>
+              <p class="macro-value">60g</p>
+            </div>
+            <div class="macro-item">
+              <p class="macro-label">Proteínas</p>
+              <p class="macro-value">18g</p>
+            </div>
+            <div class="macro-item">
+              <p class="macro-label">Gorduras</p>
+              <p class="macro-value">12g</p>
+            </div>
+          </div>
+          <p class="calorias">560kcal</p>
+        </div>
+
+        <div class="refeicao-card">
+          <div class="refeicao-header">
+            <h3>Jantar</h3>
+            <p class="horario">🕐 16:15</p>
+          </div>
+          <div class="macros">
+            <div class="macro-item">
+              <p class="macro-label">Carboidratos</p>
+              <p class="macro-value">35g</p>
+            </div>
+            <div class="macro-item">
+              <p class="macro-label">Proteínas</p>
+              <p class="macro-value">10g</p>
+            </div>
+            <div class="macro-item">
+              <p class="macro-label">Gorduras</p>
+              <p class="macro-value">5g</p>
+            </div>
+          </div>
+          <p class="calorias">250kcal</p>
+        </div>
+      </div>
+      <button class="ir-dieta">Ir para página de dieta →</button>
     </div>
   </main>
 </template>
@@ -216,7 +306,6 @@ main {
 }
 
 .card1:hover, .card2:hover, .card3:hover {
-  transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(206, 233, 4, 0.2);
   border-color: rgb(206, 233, 4);
 }
@@ -263,11 +352,30 @@ main {
   gap: 30px;
 }
 
+.treinos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
 .treinos h1 {
   font-family: Poppins, sans-serif;
   color: white;
   font-size: 32px;
   text-align: center;
+}
+
+.ver-todos {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.ver-todos:hover {
+  color: rgb(206, 233, 4);
 }
 
 .images {
@@ -283,14 +391,10 @@ main {
   position: relative;
   overflow: hidden;
   border-radius: 20px;
-  transition: transform 0.3s ease;
   flex: 1;
   min-width: 300px;
   max-width: 500px;
-}
-
-.cardImg:hover {
-  transform: scale(1.02);
+  cursor: pointer;
 }
 
 .cardImg img {
@@ -298,13 +402,207 @@ main {
   height: auto;
   aspect-ratio: 16/10;
   object-fit: cover;
-  filter: blur(1.5px);
-  transition: filter 0.3s ease;
+  filter: blur(2px);
   border-radius: 20px;
+  transition: filter 0.3s ease;
 }
 
 .cardImg:hover img {
-  filter: blur(0px);
+  filter:blur(2px) brightness(0.7);
+}
+
+.cardImg-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 25px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cardImg-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cardImg-info .exercicios {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.cardImg-info h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+
+.cardImg-info .data {
+  display: inline-block;
+  background-color: rgb(206, 233, 4);
+  color: black;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  width: fit-content;
+}
+
+.cardImg-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.cardImg-btn:hover {
+  background-color: rgb(206, 233, 4);
+}
+
+.ir-treinos {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 15px 35px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Poppins, sans-serif;
+  transition:  0.6s;
+  margin-top: 15px;
+}
+
+.ir-treinos:hover {
+  background-color: rgb(206, 233, 4);
+  color: black;
+  border-color: rgb(206, 233, 4);
+}
+
+/* ========== REFEIÇÕES ========== */
+.refeicoes {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 40px;
+  gap: 30px;
+}
+
+.refeicoes h1 {
+  font-family: Poppins, sans-serif;
+  color: white;
+  font-size: 32px;
+}
+
+.refeicoes-cards {
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  gap: 40px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.refeicao-card {
+  background-color: #f2f0ef;
+  border-radius: 20px;
+  padding: 25px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: all 0.3s ease;
+}
+
+.refeicao-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.refeicao-header h3 {
+  font-size: 20px;
+  color: black;
+  margin: 0;
+  font-weight: 600;
+}
+
+.horario {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+.macros {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.macro-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.macro-label {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+  text-align: center;
+}
+
+.macro-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  margin: 0;
+}
+
+.calorias {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  margin: 0;
+  padding-top: 10px;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.ir-dieta {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 15px 35px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: Poppins, sans-serif;
+  transition: 0.6s;
+  margin-top: 15px;
+}
+
+.ir-dieta:hover {
+  background-color: rgb(206, 233, 4);
+  color: black;
+  border-color: rgb(206, 233, 4);
 }
 
 /* ========== RESPONSIVIDADE ========== */
@@ -333,6 +631,10 @@ main {
   .navegaçao h1 {
     font-size: 24px;
   }
+
+  .refeicoes h1 {
+  font-size: 28px;
+}
 
   .pages {
     gap: 30px;
@@ -397,6 +699,22 @@ main {
   .navegaçao h1 {
     font-size: 20px;
   }
+  
+  .refeicoes {
+  padding: 0 25px;
+}
+
+.refeicoes h1 {
+  font-size: 24px;
+}
+
+.refeicoes-cards {
+  gap: 25px;
+}
+
+.refeicao-card {
+  min-width: 250px;
+}
 
   .pages {
     gap: 20px;
@@ -441,6 +759,11 @@ main {
     padding: 0 25px;
   }
 
+  .treinos-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
   .treinos h1 {
     font-size: 24px;
   }
@@ -452,6 +775,14 @@ main {
   .cardImg {
     min-width: 250px;
   }
+
+  .cardImg-info h3 {
+    font-size: 18px;
+  }
+
+  .cardImg-overlay {
+    padding: 20px;
+  }
 }
 
 /* Mobile pequeno (até 480px) */
@@ -459,6 +790,25 @@ main {
   .navegaçao h1 {
     font-size: 18px;
   }
+
+  .refeicoes {
+  padding: 0 20px;
+}
+
+.refeicoes h1 {
+  font-size: 20px;
+}
+
+.refeicoes-cards {
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.refeicao-card {
+  min-width: 100%;
+  max-width: 450px;
+}
 
   .pages {
     gap: 10px;
@@ -522,6 +872,24 @@ main {
 
   .cardImg {
     min-width: 100%;
+  }
+
+  .cardImg-info h3 {
+    font-size: 16px;
+  }
+
+  .cardImg-info .exercicios {
+    font-size: 10px;
+  }
+
+  .cardImg-overlay {
+    padding: 15px;
+  }
+
+  .cardImg-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
   }
 }
 </style>
