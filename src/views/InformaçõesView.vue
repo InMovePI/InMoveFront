@@ -132,7 +132,7 @@ const handleCadastro = async () => {
     localStorage.removeItem('dadosCadastro');
     
     // Redirecionar para home/dashboard
-    router.push('/');
+    router.push('/perfil');
     
   } catch (err) {
     console.error('Erro ao cadastrar:', err);

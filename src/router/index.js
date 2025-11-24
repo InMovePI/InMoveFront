@@ -4,6 +4,7 @@ import CadastroView from "../views/CadastroView.vue";
 import InformaçõesView from "../views/InformaçõesView.vue";
 import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
+import PerfilView from "../views/PerfilView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,11 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
+    },
+    {
+      path: '/perfil',
+      name: 'perfil',
+      component: PerfilView,
     },
   ],
 });
