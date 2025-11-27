@@ -12,7 +12,6 @@ const metaPeso = ref('');
 const objetivo = ref('');
 const diasTreino = ref([]);
 const grupoFoco = ref([]);
-const preferencias = ref('');
 
 // Estados
 const erro = ref('');
@@ -97,7 +96,7 @@ const handleCadastro = async () => {
 
   const dadosCadastro = JSON.parse(dadosCadastroStr);
 
-  // Montar objeto completo para enviar
+  // Montar objeto completo para enviar ao backend
   const dadosCompletos = {
     name: dadosCadastro.name,
     email: dadosCadastro.email,
@@ -106,8 +105,6 @@ const handleCadastro = async () => {
     genero: dadosCadastro.genero,
     altura_cm: parseInt(altura.value),
     peso_kg: parseFloat(pesoAtual.value),
-    preferencias: preferencias.value || 'outro',
-    // Campos extras (não estão no model User, mas podem ser úteis)
     meta_peso: parseFloat(metaPeso.value),
     objetivo: objetivo.value,
     dias_treino: diasTreino.value.join(','),
@@ -136,9 +133,21 @@ const handleCadastro = async () => {
     
   } catch (err) {
     console.error('Erro ao cadastrar:', err);
-    erro.value = err.response?.data?.message || 
-                 err.response?.data?.detail ||
-                 'Erro ao cadastrar. Tente novamente.';
+    
+    // Tratamento melhorado de erros
+    if (err.response?.data) {
+      // Se o erro vier com um objeto de erros de campo
+      if (typeof err.response.data === 'object' && !err.response.data.message) {
+        const primeiroErro = Object.values(err.response.data)[0];
+        erro.value = Array.isArray(primeiroErro) ? primeiroErro[0] : primeiroErro;
+      } else {
+        erro.value = err.response.data.message || 
+                     err.response.data.detail ||
+                     'Erro ao cadastrar. Tente novamente.';
+      }
+    } else {
+      erro.value = 'Erro ao conectar com o servidor. Verifique sua conexão.';
+    }
   } finally {
     loading.value = false;
   }
@@ -162,12 +171,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="cadastro">
-    <!-- IMAGEM DE FUNDO - COLOQUE SUA IMAGEM AQUI -->
-    <div class="background-image">
-      <!-- OPÇÃO 1: Use background-image no CSS */
-      <!-- OPÇÃO 2: Ou descomente a linha abaixo -->
-      <!-- <img src="/homem-de-vista-frontal-malhando-com-halteres.jpg" alt="Background" /> -->
-    </div>
+    <div class="background-image"></div>
 
     <!-- Card do formulário com efeito glass -->
     <div class="card-formulario">
@@ -195,6 +199,7 @@ onBeforeUnmount(() => {
               <input 
                 v-model="pesoAtual"
                 type="number" 
+                step="0.1"
                 class="input" 
               />
             </div>
@@ -212,6 +217,7 @@ onBeforeUnmount(() => {
               <input 
                 v-model="metaPeso"
                 type="number" 
+                step="0.1"
                 class="input" 
               />
             </div>
@@ -292,9 +298,9 @@ onBeforeUnmount(() => {
           class="button"
           :disabled="loading"
         >
-          {{ loading ? 'CADASTRANDO...' : 'CONTINUAR' }}
+          {{ loading ? 'CADASTRANDO...' : 'FINALIZAR CADASTRO' }}
         </button>
-                        <p class="login-link">
+        <p class="login-link">
           Já possui uma conta? 
           <router-link to="/login">Faça login!</router-link>
         </p>
@@ -320,7 +326,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 
-/* IMAGEM DE FUNDO - COLOQUE SUA IMAGEM AQUI */
+/* IMAGEM DE FUNDO */
 .background-image {
   position: absolute;
   top: 0;
@@ -329,16 +335,12 @@ onBeforeUnmount(() => {
   height: 100%;
   z-index: 1;
   
-  /* OPÇÃO 1: Use background-image */
- background-image: url('/public/mulherAlongando.png');
+  background-image: url('/public/mulherAlongando.png');
   opacity: 0.9;
   background-size: cover;
   background-position-y: 30%;
   background-position-x: center;
   background-repeat: no-repeat;
-  
-  /* OPÇÃO 2: Ou use uma cor temporária */
-  background-color: #2a2a2a;
 }
 
 .background-image img {
@@ -356,15 +358,11 @@ onBeforeUnmount(() => {
   max-width: 480px;
   padding: 50px 40px;
   
-  /* Efeito de vidro fosco */
   background: rgba(20, 20, 20, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   
-  /* Borda azul como na imagem */
   border-radius: 8px;
-  
-  /* Sombra para destacar */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
@@ -412,6 +410,7 @@ onBeforeUnmount(() => {
   font-family: 'Poppins', sans-serif;
   font-size: 14px;
   border: 1px solid #ff4444;
+  width: 100%;
 }
 
 .campos {
@@ -642,7 +641,6 @@ onBeforeUnmount(() => {
   text-decoration: underline;
   opacity: 0.8;
 }
-
 
 /* Responsividade */
 @media (max-width: 1024px) {

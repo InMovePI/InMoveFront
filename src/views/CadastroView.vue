@@ -1,62 +1,66 @@
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
 // Dados do formulário
-const nome = ref('');
-const email = ref('');
-const senha = ref('');
-const confirmarSenha = ref('');
-const erro = ref('');
-const loading = ref(false);
+const nome = ref('')
+const email = ref('')
+const senha = ref('')
+const dataNascimento = ref('')
+const genero = ref('')
+const erro = ref('')
+const loading = ref(false)
 
 const handleContinuar = () => {
   // Validações básicas
-  if (!nome.value || !email.value || !senha.value || !confirmarSenha.value) {
-    erro.value = 'Por favor, preencha todos os campos';
-    return;
+  if (!nome.value || !email.value || !senha.value || !dataNascimento.value || !genero.value) {
+    erro.value = 'Por favor, preencha todos os campos'
+    return
   }
 
   // Validação de email
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email.value)) {
-    erro.value = 'Email inválido';
-    return;
+    erro.value = 'Email inválido'
+    return
   }
 
   // Validação de senha (mínimo 6 caracteres)
   if (senha.value.length < 6) {
-    erro.value = 'A senha deve ter no mínimo 6 caracteres';
-    return;
+    erro.value = 'A senha deve ter no mínimo 6 caracteres'
+    return
   }
 
-  // Validação de confirmação de senha
-  if (senha.value !== confirmarSenha.value) {
-    erro.value = 'As senhas não coincidem';
-    return;
+
+  // Mapear gênero para o código esperado pelo backend
+  const generoMap = {
+    'masculino': 'M',
+    'feminino': 'F',
+    'prefiro-nao-dizer': 'O'
   }
 
   // Salvar dados no localStorage
   const dadosCadastro = {
     name: nome.value,
     email: email.value,
-    password: senha.value
-  };
+    password: senha.value,
+    data_nascimento: dataNascimento.value,
+    genero: generoMap[genero.value],
+  }
 
-  localStorage.setItem('dadosCadastro', JSON.stringify(dadosCadastro));
-  
+  localStorage.setItem('dadosCadastro', JSON.stringify(dadosCadastro))
+
   // Redirecionar para próxima página
-  router.push('/informacoes');
-};
+  router.push('/informacoes')
+}
+
 </script>
 
 <template>
   <section class="cadastro">
-    <div class="background-image">
-
-    </div>
+    <div class="background-image"></div>
 
     <!-- Card do formulário com efeito glass -->
     <div class="card-formulario">
@@ -64,7 +68,7 @@ const handleContinuar = () => {
         <div class="titulo">
           <h1>INMOVE</h1>
         </div>
-        
+
         <div class="breadcrumb">
           <span>Usuário</span>
           <span class="separador">&gt;</span>
@@ -79,50 +83,43 @@ const handleContinuar = () => {
         <div class="campos">
           <div class="campo">
             <label>Nome:</label>
-            <input 
-              v-model="nome"
-              type="text" 
-              class="input" 
-            />
+            <input v-model="nome" type="text" class="input" />
           </div>
 
           <div class="campo">
             <label>Email:</label>
-            <input 
-              v-model="email"
-              type="email" 
-              class="input" 
-            />
+            <input v-model="email" type="email" class="input" />
           </div>
+
 
           <div class="campo">
             <label>Senha:</label>
-            <input 
-              v-model="senha"
-              type="password" 
-              class="input" 
-            />
+            <input v-model="senha" type="password" class="input" />
           </div>
 
-          <div class="campo">
-            <label>Confirmar senha:</label>
-            <input 
-              v-model="confirmarSenha"
-              type="password" 
-              class="input" 
-            />
+          <div class="campo-duplo">
+            <div class="campo">
+              <label>Data de nascimento:</label>
+              <input v-model="dataNascimento" type="date" class="input" />
+            </div>
+
+            <div class="campo">
+              <label>Gênero:</label>
+              <select v-model="genero" class="input select-custom">
+                <option value="" disabled selected>Selecione</option>
+                <option value="masculino">Masculino</option>
+                <option value="feminino">Feminino</option>
+                <option value="prefiro-nao-dizer">Prefiro não dizer</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <button 
-          @click="handleContinuar" 
-          class="button"
-          :disabled="loading"
-        >
+        <button @click="handleContinuar" class="button" :disabled="loading">
           {{ loading ? 'Carregando...' : 'CONTINUAR' }}
         </button>
-                <p class="login-link">
-          Já possui uma conta? 
+        <p class="login-link">
+          Já possui uma conta?
           <router-link to="/login">Faça login!</router-link>
         </p>
       </div>
@@ -155,7 +152,7 @@ const handleContinuar = () => {
   width: 100%;
   height: 100%;
   z-index: 1;
-  
+
   /* OPÇÃO 1: Use background-image */
   background-image: url('/public/mulherAlongando.png');
   opacity: 0.9;
@@ -163,9 +160,6 @@ const handleContinuar = () => {
   background-position-y: 30%;
   background-position-x: center;
   background-repeat: no-repeat;
-  
-  /* OPÇÃO 2: Ou use uma cor temporária */
-  background-color: #2a2a2a;
 }
 
 .background-image img {
@@ -175,22 +169,21 @@ const handleContinuar = () => {
   display: block;
 }
 
-/* Card com efeito glassmorphism */
 .card-formulario {
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: 480px;
   padding: 50px 40px;
-  
+
   /* Efeito de vidro fosco */
   background: rgba(20, 20, 20, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  
+
   /* Borda azul como na imagem */
   border-radius: 8px;
-  
+
   /* Sombra para destacar */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
@@ -239,6 +232,7 @@ const handleContinuar = () => {
   font-family: 'Poppins', sans-serif;
   font-size: 14px;
   border: 1px solid #ff4444;
+  width: 100%;
 }
 
 .campos {
@@ -253,6 +247,13 @@ const handleContinuar = () => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.campo-duplo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
 }
 
 .campo label {
@@ -281,6 +282,26 @@ const handleContinuar = () => {
 
 .input::placeholder {
   color: rgba(255, 255, 255, 0.4);
+}
+
+.select-custom {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+  padding-right: 20px;
+}
+
+.select-custom option {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 10px;
+}
+
+.select-custom option:checked {
+  background-color: rgb(206, 233, 4);
+  color: #000;
 }
 
 .button {
@@ -315,6 +336,7 @@ const handleContinuar = () => {
   transform: none;
   box-shadow: none;
 }
+
 .login-link {
   color: white;
   font-family: 'Poppins', sans-serif;
@@ -334,7 +356,6 @@ const handleContinuar = () => {
   text-decoration: underline;
   opacity: 0.8;
 }
-
 
 /* Responsividade */
 @media (max-width: 1024px) {
@@ -387,6 +408,11 @@ const handleContinuar = () => {
   .button {
     max-width: 100%;
     padding: 14px;
+  }
+
+  .campo-duplo {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
