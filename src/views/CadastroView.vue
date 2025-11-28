@@ -27,9 +27,9 @@ const handleContinuar = () => {
     return
   }
 
-  // Validação de senha (mínimo 6 caracteres)
-  if (senha.value.length < 6) {
-    erro.value = 'A senha deve ter no mínimo 6 caracteres'
+  // Validação de senha (mínimo 8 caracteres)
+    if (senha.value.length < 8) {
+      erro.value = 'A senha deve ter no mínimo 8 caracteres'
     return
   }
 
