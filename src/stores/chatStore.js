@@ -14,7 +14,7 @@ export const useChatStore = defineStore('chat', {
     /** Load list of sessions (history) */
     async loadSessions() {
       try {
-        const res = await api.get('/chat/history/');
+        const res = await api.get('/chat/sessions/');
         this.sessions = Array.isArray(res.data) ? res.data : [];
       } catch (err) {
         this.error = err;
@@ -35,30 +35,52 @@ export const useChatStore = defineStore('chat', {
         // Backend might return treino/dieta or reply text
         if (data && (data.treino || data.dieta)) {
           // Backend returned treino/dieta structured data; create a card message
-          const assistantMsg = { role: 'assistant', type: 'card', card: { treino: data.treino, dieta: data.dieta }, created_at: new Date().toISOString(), session: data.session_id || (sessionId || this.selectedSession) };
+          const assistantMsg = { 
+            role: 'assistant', 
+            type: 'card', 
+            card: { treino: data.treino, dieta: data.dieta }, 
+            created_at: new Date().toISOString(), 
+            session: data.session_id || (sessionId || this.selectedSession) 
+          };
           this.messages.push(assistantMsg);
           // If api returned session_id, use it
           if (data.session_id) this.selectedSession = data.session_id;
           return assistantMsg;
         } else if (typeof data === 'string') {
-          const m = { role: 'assistant', type: 'text', content: data, created_at: new Date().toISOString(), session: data.session_id || (sessionId || this.selectedSession) };
+          const m = { 
+            role: 'assistant', 
+            type: 'text', 
+            content: data, 
+            created_at: new Date().toISOString(), 
+            session: data.session_id || (sessionId || this.selectedSession) 
+          };
           this.messages.push(m);
           if (data.session_id) this.selectedSession = data.session_id;
           return m;
         } else if (data?.reply) {
-          const m = { role: 'assistant', type: 'text', content: data.reply, created_at: new Date().toISOString(), session: data.session_id || (sessionId || this.selectedSession) };
+          const m = { 
+            role: 'assistant', 
+            type: 'text', 
+            content: data.reply, 
+            created_at: new Date().toISOString(), 
+            session: data.session_id || (sessionId || this.selectedSession) 
+          };
           this.messages.push(m);
           if (data.session_id) this.selectedSession = data.session_id;
           return m;
         } else {
           // fallback: push entire payload
-          const m = { role: 'assistant', type: 'text', content: JSON.stringify(data), created_at: new Date().toISOString(), session: data.session_id || (sessionId || this.selectedSession) };
+          const m = { 
+            role: 'assistant', 
+            type: 'text', 
+            content: JSON.stringify(data), 
+            created_at: new Date().toISOString(), 
+            session: data.session_id || (sessionId || this.selectedSession) 
+          };
           this.messages.push(m);
           if (data.session_id) this.selectedSession = data.session_id;
           return m;
         }
-        // Optionally refresh history
-        // await this.loadHistory();
       } catch (err) {
         this.error = err;
         console.error('Failed to send message', err);
@@ -96,18 +118,21 @@ export const useChatStore = defineStore('chat', {
     },
     async renameSession(sessionId, title) {
       try {
-        // try server endpoint; if it doesn't exist, adjust locally
         if (!sessionId) throw new Error('Missing session id');
         const res = await api.patch(`/chat/sessions/${sessionId}/`, { title });
         const updated = res.data;
         // update local sessions
-        this.sessions = this.sessions.map((s) => (s.id === sessionId ? { ...s, title: updated?.title || title } : s));
+        this.sessions = this.sessions.map((s) => 
+          s.id === sessionId ? { ...s, title: updated?.title || title } : s
+        );
         return updated;
       } catch (err) {
         // fallback to local rename
-        this.sessions = this.sessions.map((s) => (s.id === sessionId ? { ...s, title } : s));
+        this.sessions = this.sessions.map((s) => 
+          s.id === sessionId ? { ...s, title } : s
+        );
         this.error = err;
-        this.errorMessage = 'Falha ao renomear sessão (fallback local aplicado).';
+        this.errorMessage = 'Falha ao renomear sessão no servidor, mas foi salvo localmente.';
         console.warn('Failed to rename session on server, local fallback used', err);
         return { id: sessionId, title };
       }
@@ -120,15 +145,22 @@ export const useChatStore = defineStore('chat', {
         this.sessions = this.sessions.filter((s) => s.id !== sessionId);
         if (this.selectedSession === sessionId) {
           this.selectedSession = this.sessions.length ? this.sessions[0].id : null;
-          if (this.selectedSession) await this.loadSessionMessages(this.selectedSession);
+          if (this.selectedSession) {
+            await this.loadSessionMessages(this.selectedSession);
+          } else {
+            this.messages = [];
+          }
         }
         return true;
       } catch (err) {
         // fallback: remove locally
         this.sessions = this.sessions.filter((s) => s.id !== sessionId);
-        if (this.selectedSession === sessionId) this.selectedSession = this.sessions.length ? this.sessions[0].id : null;
+        if (this.selectedSession === sessionId) {
+          this.selectedSession = this.sessions.length ? this.sessions[0].id : null;
+          this.messages = [];
+        }
         this.error = err;
-        this.errorMessage = 'Falha ao excluir sessão (fallback local aplicado).';
+        this.errorMessage = 'Falha ao excluir sessão no servidor, mas foi removida localmente.';
         console.warn('Failed to delete session on server, local fallback used', err);
         return false;
       }
@@ -143,8 +175,10 @@ export const useChatStore = defineStore('chat', {
     },
     async loadSessionMessages(sessionId) {
       try {
-        const res = await api.get(`/chat/sessions/${sessionId}/`);
+        // CORREÇÃO: Usar o endpoint correto para buscar MENSAGENS da sessão
+        const res = await api.get(`/chat/sessions/${sessionId}/messages/`);
         let messages = Array.isArray(res.data) ? res.data : [];
+        
         // Normalize messages: parse JSON for assistant card
         messages = messages.map((m) => {
           if (m.role === 'assistant' && typeof m.content === 'string') {
@@ -159,6 +193,7 @@ export const useChatStore = defineStore('chat', {
           }
           return m;
         });
+        
         this.messages = messages;
         this.selectedSession = sessionId;
         return messages;
