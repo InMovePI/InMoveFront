@@ -16,12 +16,8 @@ app.use(router);
 // Hydrate auth store on app startup if token exists
 try {
 	const authStore = useAuthStore();
-	if (localStorage.getItem('access_token') && !authStore.user) {
-		// don't await to avoid delaying boot; attempt to fetch user
-		authStore.fetchCurrentUser().catch(() => {
-			// ignore fetch errors, leave user null
-		});
-	}
+	// initialize auth store (set axios header and optionally fetch user)
+	authStore.initFromStorage();
 } catch (err) {
 	// if pinia not ready for store, ignore
 }

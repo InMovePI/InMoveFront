@@ -26,7 +26,9 @@ const handleLogin = async () => {
   try {
     // delegate to auth store
     await authStore.login(email.value, senha.value);
-    router.push('/dashboard');
+    // Redirect to original target or dashboard
+    const next = router.currentRoute.value.query.next || '/dashboard';
+    router.push(next);
   } catch (err) {
     console.error('Erro ao fazer login:', err);
     

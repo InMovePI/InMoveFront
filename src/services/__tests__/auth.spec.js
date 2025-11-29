@@ -24,4 +24,15 @@ describe('AuthService', () => {
     const created = await AuthService.register(payload);
     expect(created.id).toBe(1);
   });
+
+  it('update sends JSON object when not form and returns data', async () => {
+    const updated = { id: 5, name: 'J' };
+    const spy = vi.spyOn(api, 'patch').mockResolvedValue({ data: updated });
+    const payload = { name: 'J' };
+    const result = await AuthService.update(payload, false);
+    expect(spy).toHaveBeenCalledWith('/usuarios/me/', payload, { headers: { 'Content-Type': 'application/json' } });
+    expect(result).toEqual(updated);
+  });
+
+  // FormData support and profile picture flow was removed per user request
 });

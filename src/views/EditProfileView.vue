@@ -2,13 +2,18 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import api from '@/services/api';
 
 const authStore = useAuthStore();
 const router = useRouter();
 
 const name = ref(authStore.user?.name || '');
 const email = ref(authStore.user?.email || '');
+const altura = ref(authStore.user?.altura_cm || authStore.user?.altura || '');
+const peso = ref(authStore.user?.peso_kg || authStore.user?.peso || '');
+const meta_peso = ref(authStore.user?.meta_peso || '');
+const objetivo = ref(authStore.user?.objetivo || '');
+const dias_treino = ref(authStore.user?.dias_treino || '');
+const grupo_foco = ref(authStore.user?.grupo_foco || '');
 const loading = ref(false);
 const error = ref('');
 
@@ -16,17 +21,21 @@ async function save() {
   loading.value = true;
   error.value = '';
   try {
-    // attempt to update profile via API if backend supports
-    const payload = { name: name.value, email: email.value };
-    const response = await api.patch('/usuarios/me/', payload).catch(() => null);
-    if (response && response.data) {
-      // update store
-      await authStore.fetchCurrentUser();
-    } else {
-      // no backend update; update local store
-      authStore.user = { ...authStore.user, name: name.value, email: email.value };
-      localStorage.setItem('user', JSON.stringify(authStore.user));
-    }
+    let payload;
+    let isForm = false;
+    // Always send JSON payload (profile picture upload cancelled)
+    payload = {
+      name: name.value,
+      email: email.value,
+      altura_cm: altura.value,
+      peso_kg: peso.value,
+      meta_peso: meta_peso.value,
+      objetivo: objetivo.value,
+      dias_treino: Array.isArray(dias_treino.value) ? dias_treino.value.join(',') : dias_treino.value,
+      grupo_foco: Array.isArray(grupo_foco.value) ? grupo_foco.value.join(',') : grupo_foco.value
+    };
+
+    await authStore.updateProfile(payload, isForm);
     router.push('/perfil');
   } catch (err) {
     error.value = 'Erro ao atualizar perfil';
@@ -40,6 +49,7 @@ async function save() {
   <section class="edit-perfil">
     <div class="card">
       <h2>Editar Perfil</h2>
+      <!-- Photo upload removed per feature cancellation -->
       <div class="field">
         <label>Nome</label>
         <input v-model="name" type="text" />
@@ -47,6 +57,30 @@ async function save() {
       <div class="field">
         <label>Email</label>
         <input v-model="email" type="email" />
+      </div>
+      <div class="field">
+        <label>Peso (kg)</label>
+        <input v-model="peso" type="number" step="0.1" />
+      </div>
+      <div class="field">
+        <label>Altura (cm)</label>
+        <input v-model="altura" type="number" />
+      </div>
+      <div class="field">
+        <label>Meta de peso (kg)</label>
+        <input v-model="meta_peso" type="number" step="0.1" />
+      </div>
+      <div class="field">
+        <label>Objetivo</label>
+        <input v-model="objetivo" type="text" />
+      </div>
+      <div class="field">
+        <label>Dias de Treino (use vírgula pra separar)</label>
+        <input v-model="dias_treino" type="text" />
+      </div>
+      <div class="field">
+        <label>Grupo de Foco (use vírgula pra separar)</label>
+        <input v-model="grupo_foco" type="text" />
       </div>
       <div class="actions">
         <button class="btn" @click="save" :disabled="loading">{{loading ? 'SALVANDO...' : 'SALVAR'}}</button>

@@ -49,7 +49,22 @@ const router = createRouter({
       name: 'perfil.editar',
       component: EditProfileView,
     },
+    {
+      path: '/chat',
+      name: 'chat',
+      component: () => import('@/views/ChatPage.vue'),
+      meta: { requiresAuth: true },
+    }
   ],
+});
+
+// global guard to enforce JWT login on routes with `requiresAuth` meta
+router.beforeEach((to, from) => {
+  if (to.meta?.requiresAuth) {
+    const token = localStorage.getItem('access_token');
+    if (!token) return { name: 'login', query: { next: to.fullPath } };
+  }
+  return true;
 });
 
 export default router;

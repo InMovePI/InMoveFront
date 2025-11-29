@@ -2,6 +2,7 @@ import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import AuthService from '@/services/auth';
 import api from '@/services/api';
+// Using AuthService only (user.js removed)
 const auth = AuthService;
 
 export const useAuthStore = defineStore('auth', () => {
@@ -47,6 +48,37 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function updateProfile(payload, isForm = false) {
+    try {
+      const updated = await auth.update(payload, isForm);
+      // If API returns updated user, apply it
+      if (updated) {
+        user.value = updated;
+        localStorage.setItem('user', JSON.stringify(updated));
+      }
+      return updated;
+    } catch (err) {
+      console.error('Error updating profile', err);
+      throw err;
+    }
+  }
+
+  async function initFromStorage() {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      // ensure axios header set
+      auth.setAuthHeader(token);
+      try {
+        const me = await auth.getCurrentUser();
+        user.value = me;
+      } catch (err) {
+        console.warn('Could not fetch current user during init', err);
+      }
+    }
+  }
+
+  // uploadProfilePicture removed as profile picture feature was cancelled
+
   // hydrate store from localStorage if available
   if (localStorage.getItem('access_token')) {
     // ensure header set
@@ -55,5 +87,5 @@ export const useAuthStore = defineStore('auth', () => {
     if (userStr) user.value = JSON.parse(userStr);
   }
 
-  return { user, isAuthenticated, register, login, logout, fetchCurrentUser };
+  return { user, isAuthenticated, register, login, logout, fetchCurrentUser, updateProfile };
 });

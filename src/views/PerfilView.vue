@@ -5,6 +5,16 @@ import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 const router = useRouter();
 
+const name = computed(() => authStore.user?.name || '');
+const email = computed(() => authStore.user?.email || '');
+const altura = computed(() => authStore.user?.altura_cm || authStore.user?.altura || '');
+const peso = computed(() => authStore.user?.peso_kg || authStore.user?.peso || '');
+const meta_peso = computed(() => authStore.user?.meta_peso || '');
+const objetivo = computed(() => authStore.user?.objetivo || '');
+const dias_treino = computed(() => (authStore.user?.dias_treino && authStore.user.dias_treino.split(',')) || []);
+const grupo_foco = computed(() => (authStore.user?.grupo_foco && authStore.user.grupo_foco.split(',')) || []);
+const initials = computed(() => (name.value ? name.value.split(' ').map(n=>n[0]).join('') : 'U'));
+
 function handleLogout() {
     authStore.logout();
     router.push('/login');
@@ -15,10 +25,10 @@ function handleLogout() {
     <section class="perfil">
         <div class="perfil-card">
             <div class="perfil-header">
-                <div class="avatar">{{ (authStore.user?.name || 'U').charAt(0).toUpperCase() }}</div>
+                <div class="avatar">{{ initials }}</div>
                 <div class="perfil-info">
-                    <h2>{{ authStore.user?.name || 'Usuário' }}</h2>
-                    <p>{{ authStore.user?.email || '' }}</p>
+                    <h2>{{ name || 'Usuário' }}</h2>
+                    <p>{{ email || '' }}</p>
                 </div>
             </div>
 
@@ -28,10 +38,34 @@ function handleLogout() {
                       <label>Nome</label>
                       <span>{{ authStore.user?.name || '-' }}</span>
                 </div>
-                <div class="field">
-                      <label>Email</label>
-                      <span>{{ authStore.user?.email || '-' }}</span>
-                </div>
+                    <div class="field">
+                        <label>Email</label>
+                        <span>{{ email || '-' }}</span>
+                    </div>
+                    <div class="field" v-if="peso">
+                        <label>Peso (kg)</label>
+                        <span>{{ peso }}</span>
+                    </div>
+                    <div class="field" v-if="altura">
+                        <label>Altura (cm)</label>
+                        <span>{{ altura }}</span>
+                    </div>
+                    <div class="field" v-if="meta_peso">
+                        <label>Meta de Peso (kg)</label>
+                        <span>{{ meta_peso }}</span>
+                    </div>
+                    <div class="field" v-if="objetivo">
+                        <label>Objetivo</label>
+                        <span>{{ objetivo }}</span>
+                    </div>
+                    <div class="field" v-if="dias_treino.length">
+                        <label>Dias de Treino</label>
+                        <span>{{ dias_treino.join(', ') }}</span>
+                    </div>
+                    <div class="field" v-if="grupo_foco.length">
+                        <label>Grupo de Foco</label>
+                        <span>{{ grupo_foco.join(', ') }}</span>
+                    </div>
             </div>
 
             <div class="perfil-actions">

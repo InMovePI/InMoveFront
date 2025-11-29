@@ -42,6 +42,14 @@ const AuthService = {
     const response = await api.get('/usuarios/me/');
     return response.data;
   }
+,
+  async update(payload, isForm = false) {
+    // payload can be plain object or FormData (for file uploads)
+    // When sending FormData, allow axios/browser to set Content-Type including boundary
+    const headers = isForm ? {} : { 'Content-Type': 'application/json' };
+    const response = await api.patch('/usuarios/me/', payload, { headers });
+    return response.data;
+  }
 };
 
 export default AuthService;
