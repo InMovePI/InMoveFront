@@ -1,4 +1,7 @@
-<script setup></script>
+<script setup>
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
+</script>
 
 <template>
   <header>
@@ -8,7 +11,11 @@
         <router-link to="/">Home</router-link>
         <router-link to="/dashboard"><span>Dashboard</span></router-link>
         <router-link to="/">Explorar</router-link>
-        <router-link to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
+        <router-link v-if="!authStore.isAuthenticated" to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
+        <router-link v-else to="/perfil" class="cadastro">
+          <span class="avatar-sm">{{ authStore.user?.name ? authStore.user.name.charAt(0).toUpperCase() : 'U' }}</span>
+          Perfil
+        </router-link>
       </div>
     </div>
   </header>
@@ -194,6 +201,19 @@ body {
   text-decoration: none;
   position: relative;
   white-space: nowrap;
+}
+
+.avatar-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #000;
+  font-weight: 700;
+  margin-right: 8px;
 }
 
 .pages a:not(.cadastro)::after {

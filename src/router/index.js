@@ -5,6 +5,7 @@ import InformaçõesView from "../views/InformaçõesView.vue";
 import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import PerfilView from "../views/PerfilView.vue";
+import EditProfileView from "../views/EditProfileView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
       path: '/perfil',
       name: 'perfil',
       component: PerfilView,
+    },
+    {
+      path: '/perfil/editar',
+      name: 'perfil.editar',
+      component: EditProfileView,
     },
   ],
 });
