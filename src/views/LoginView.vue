@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import api from '@/services/api';
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 // Dados do formulário
 const email = ref('');
@@ -23,41 +24,27 @@ const handleLogin = async () => {
   erro.value = '';
 
   try {
-    // Fazer login na API
-    const response = await api.post('/api/token/', {
-      email: email.value,
-      password: senha.value
-    });
-
-    localStorage.setItem('access_token', response.data.access);
-    localStorage.setItem('refresh_token', response.data.refresh);
-
-    try {
-      const userResponse = await api.get('/api/usuarios/', {
-        headers: {
-          Authorization: `Bearer ${response.data.access}`
-        }
-      });
-      
-      const user = userResponse.data.results.find(u => u.email === email.value);
-      if (user) {
-        localStorage.setItem('user', JSON.stringify(user));
-      }
-    } catch (err) {
-      console.error('Erro ao buscar dados do usuário:', err);
-    }
-
-    router.push('/');
-
+    // delegate to auth store
+    await authStore.login(email.value, senha.value);
+    // Redirect to original target or dashboard
+    const next = router.currentRoute.value.query.next || '/dashboard';
+    router.push(next);
   } catch (err) {
     console.error('Erro ao fazer login:', err);
     
     if (err.response?.status === 401) {
       erro.value = 'Email ou senha incorretos';
+    } else if (err.response?.data) {
+      if (err.response.data.detail) {
+        erro.value = err.response.data.detail;
+      } else if (typeof err.response.data === 'object') {
+        const firstErr = Object.values(err.response.data)[0];
+        erro.value = Array.isArray(firstErr) ? firstErr[0] : firstErr;
+      } else {
+        erro.value = 'Erro ao fazer login. Tente novamente.';
+      }
     } else {
-      erro.value = err.response?.data?.detail || 
-                   err.response?.data?.message ||
-                   'Erro ao fazer login. Tente novamente.';
+      erro.value = 'Erro ao fazer login. Tente novamente.';
     }
   } finally {
     loading.value = false;
@@ -77,7 +64,7 @@ const handleKeyPress = (event) => {
     <div class="background-image">
       <!-- OPÇÃO 1: Use background-image no CSS -->
       <!-- OPÇÃO 2: Ou descomente a linha abaixo -->
-      <!-- <img src="/public/gym.jpg" alt="Background" /> -->
+      <!-- <img src="/gym.jpg" alt="Background" /> -->
     </div>
 
     <!-- Card do login com efeito glass -->
@@ -174,7 +161,7 @@ const handleKeyPress = (event) => {
   z-index: 1;
   
   /* OPÇÃO 1: Use background-image */
-  background-image: url('/public/mulherAlongando.png');
+  background-image: url('/mulherAlongando.png');
   opacity: 0.9;
   background-size: cover;
   background-position-y: 30%;

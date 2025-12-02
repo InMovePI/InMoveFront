@@ -1,25 +1,26 @@
 import axios from 'axios';
 
+// Backend root is at http://localhost:8000 — token endpoints live under /api/* while meals are at /
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
+
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000',  // URL do seu Django
-  timeout: 10000,
+  baseURL: API_BASE,
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
-  }
+  },
 });
 
-// Interceptor para adicionar token em todas as requisições
+// Interceptor para adicionar token de acesso em todas as requisições
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default api;

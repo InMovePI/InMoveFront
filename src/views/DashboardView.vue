@@ -1,17 +1,83 @@
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { listMeals, findCachedById } from '@/services/meals'
+import { formatDateBR, formatTimeHM } from '@/utils/datetime'
+import AppFooter from '@/components/AppFooter.vue'
+
+const authStore = useAuthStore()
+const recentMeals = ref([])
+const mealsLoading = ref(false)
+const mealsError = ref(null)
+
+function fmtUnit(value, unit) {
+  if (value === null || value === undefined) return '—'
+  const n = Math.round(Number(value) * 10) / 10
+  return `${n}${unit === 'kcal' ? ' kcal' : ' ' + unit}`
+}
+
+function ingredientLabel(ingredient) {
+  if (!ingredient) return 'Ingrediente'
+  if (ingredient.name) return ingredient.name
+  if (ingredient.display_name) return ingredient.display_name
+  if (ingredient.food?.name) return ingredient.food.name
+
+  if (ingredient.food_name) {
+    const cached = findCachedById(ingredient.food_name)
+    if (cached?.name) return cached.name
+    if (cached?.brand && cached?.name) return `${cached.brand} ${cached.name}`
+    if (cached?.brand) return cached.brand
+  }
+
+  if (ingredient.query) return ingredient.query
+  if (ingredient.brand) return ingredient.brand
+  return 'Ingrediente'
+}
+
+function topIngredients(meal) {
+  return (meal?.ingredients || []).slice(0, 3)
+}
+
+async function fetchRecentMeals() {
+  mealsLoading.value = true
+  mealsError.value = null
+  try {
+    const data = await listMeals({ page: 1 })
+    let list = []
+    if (Array.isArray(data)) {
+      list = data
+    } else if (Array.isArray(data?.results)) {
+      list = data.results
+    }
+    recentMeals.value = list.slice(0, 3)
+  } catch (error) {
+    console.error(error)
+    mealsError.value = 'Erro ao carregar refeições'
+    recentMeals.value = []
+  } finally {
+    mealsLoading.value = false
+  }
+}
+
+onMounted(fetchRecentMeals)
+</script>
 
 <template>
-  <header>
-    <div class="navegaçao">
-      <h1>INMOVE</h1>
-      <div class="pages">
-        <router-link to="/">Home</router-link>
-        <router-link to="/dashboard"><span>Dashboard</span></router-link>
-        <router-link to="/">Explorar</router-link>
-        <router-link to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
-      </div>
+<header>
+  <div class="navegaçao">
+    <h1>INMOVE</h1>
+    <div class="pages">
+      <router-link to="/">Home</router-link>
+      <router-link to="/dashboard"><span>Dashboard</span></router-link>
+      <router-link to="/">Explorar</router-link>
+      <router-link v-if="!authStore.isAuthenticated" to="/cadastro" class="cadastro">Cadastro de Usuário</router-link>
+      <router-link v-else to="/perfil" class="cadastro">
+        <span class="avatar-sm">{{ authStore.user?.name ? authStore.user.name.charAt(0).toUpperCase() : 'U' }}</span>
+        Perfil
+      </router-link>
     </div>
-  </header>
+  </div>
+</header>
 
   <main>
     <div class="intro">
@@ -23,28 +89,72 @@
         </p>
       </div>
 
-      <img src="/public/young-athletic-woman-exercising-situps-with-weight-plate-gym.jpg" />
+      <img src="/young-athletic-woman-exercising-situps-with-weight-plate-gym.jpg" />
     </div>
 
-    <div class="cards">
-      <div class="card1">
-        <h1>Treino</h1>
-        <p>45min</p>
-        <router-link to="/">Ver plano de treinos</router-link>
+    <section class="cards">
+      <div class="cards-head">
+        <div>
+          <h2>Últimas refeições cadastradas</h2>
+          <p>Acompanhe rapidamente as três refeições mais recentes registradas.</p>
+        </div>
+        <router-link class="cards-link" to="/meals">Ver todas</router-link>
       </div>
 
-      <div class="card2">
-        <h1>Meta de água</h1>
-        <p>2,5L</p>
-        <router-link to="/">Ver plano alimentar</router-link>
+      <div class="cards-grid" v-if="mealsLoading">
+        <div class="card-placeholder">Carregando refeições...</div>
       </div>
 
-      <div class="card3">
-        <h1>Meta calórica</h1>
-        <p>1700 cal</p>
-        <router-link to="/">Ver plano alimentar</router-link>
+      <div class="cards-grid" v-else-if="recentMeals.length">
+        <article
+          v-for="meal in recentMeals"
+          :key="meal.id"
+          class="recent-meal-card"
+        >
+          <header class="recent-meal-head">
+            <div>
+              <h3>{{ meal.title || 'Refeição sem título' }}</h3>
+              <p>{{ formatDateBR(meal.date) }} · {{ formatTimeHM(meal.time) }}</p>
+            </div>
+          </header>
+
+          <div class="macro-row">
+            <div>
+              <span>Calorias</span>
+              <strong>{{ fmtUnit(meal.total_calories, 'kcal') }}</strong>
+            </div>
+            <div>
+              <span>Proteínas</span>
+              <strong>{{ fmtUnit(meal.total_protein, 'g') }}</strong>
+            </div>
+            <div>
+              <span>Carboidratos</span>
+              <strong>{{ fmtUnit(meal.total_carbs, 'g') }}</strong>
+            </div>
+            <div>
+              <span>Gorduras</span>
+              <strong>{{ fmtUnit(meal.total_fat, 'g') }}</strong>
+            </div>
+          </div>
+
+          <div class="ingredients-preview" v-if="topIngredients(meal).length">
+            <span
+              class="pill"
+              v-for="(ingredient, idx) in topIngredients(meal)"
+              :key="ingredient.id || ingredient.food_name || idx"
+            >
+              {{ ingredientLabel(ingredient) }}
+            </span>
+          </div>
+        </article>
       </div>
-    </div>
+
+      <div class="cards-grid" v-else>
+        <div class="card-placeholder">
+          {{ mealsError || 'Nenhuma refeição cadastrada ainda. Registre sua primeira refeição para acompanhá-la aqui.' }}
+        </div>
+      </div>
+    </section>
 
     <div class="treinos">
       <div class="treinos-header">
@@ -53,7 +163,7 @@
       </div>
       <div class="images">
         <div class="cardImg">
-          <img src="/public/desportista-em-um-treinamento-de-sportswear-em-uma-academia.jpg" alt="">
+          <img src="/desportista-em-um-treinamento-de-sportswear-em-uma-academia.jpg" alt="">
           <div class="cardImg-overlay">
             <div class="cardImg-info">
               <p class="exercicios">8 exercícios/ 1h30/ 380cal</p>
@@ -64,7 +174,7 @@
           </div>
         </div>
         <div class="cardImg">
-          <img src="/public/vista-de-angulo-baixo-homem-de-construcao-muscular-irreconhecivel-se-preparando-para-levantar-uma-barra-em-um-clube-de-saude.jpg" alt="">
+          <img src="/vista-de-angulo-baixo-homem-de-construcao-muscular-irreconhecivel-se-preparando-para-levantar-uma-barra-em-um-clube-de-saude.jpg" alt="">
           <div class="cardImg-overlay">
             <div class="cardImg-info">
               <p class="exercicios">9 exercícios/ 1h30/ 400cal</p>
@@ -78,78 +188,9 @@
       <button class="ir-treinos">Ir para página de treinos ></button>
     </div>
 
-    <div class="refeicoes">
-      <h1>Últimas refeições registradas:</h1>
-      <div class="refeicoes-cards">
-        <div class="refeicao-card">
-          <div class="refeicao-header">
-            <h3>Café da manhã</h3>
-            <p class="horario">🕐 8:00</p>
-          </div>
-          <div class="macros">
-            <div class="macro-item">
-              <p class="macro-label">Carboidratos</p>
-              <p class="macro-value">43g</p>
-            </div>
-            <div class="macro-item">
-              <p class="macro-label">Proteínas</p>
-              <p class="macro-value">15g</p>
-            </div>
-            <div class="macro-item">
-              <p class="macro-label">Gorduras</p>
-              <p class="macro-value">8g</p>
-            </div>
-          </div>
-          <p class="calorias">300kcal</p>
-        </div>
-
-        <div class="refeicao-card">
-          <div class="refeicao-header">
-            <h3>Almoço</h3>
-            <p class="horario">🕐 12:30</p>
-          </div>
-          <div class="macros">
-            <div class="macro-item">
-              <p class="macro-label">Carboidratos</p>
-              <p class="macro-value">60g</p>
-            </div>
-            <div class="macro-item">
-              <p class="macro-label">Proteínas</p>
-              <p class="macro-value">18g</p>
-            </div>
-            <div class="macro-item">
-              <p class="macro-label">Gorduras</p>
-              <p class="macro-value">12g</p>
-            </div>
-          </div>
-          <p class="calorias">560kcal</p>
-        </div>
-
-        <div class="refeicao-card">
-          <div class="refeicao-header">
-            <h3>Jantar</h3>
-            <p class="horario">🕐 16:15</p>
-          </div>
-          <div class="macros">
-            <div class="macro-item">
-              <p class="macro-label">Carboidratos</p>
-              <p class="macro-value">35g</p>
-            </div>
-            <div class="macro-item">
-              <p class="macro-label">Proteínas</p>
-              <p class="macro-value">10g</p>
-            </div>
-            <div class="macro-item">
-              <p class="macro-label">Gorduras</p>
-              <p class="macro-value">5g</p>
-            </div>
-          </div>
-          <p class="calorias">250kcal</p>
-        </div>
-      </div>
-      <button class="ir-dieta">Ir para página de dieta →</button>
-    </div>
+  
   </main>
+  <AppFooter />
 </template>
 
 <style scoped>
@@ -162,23 +203,16 @@
 body {
   overflow-x: hidden;
 }
-
-/* ========== HEADER ========== */
+/* HEADER */
 .navegaçao {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   background-color: white;
-  padding: 1.5rem 2rem;
+  padding: 2.3rem;
   flex-wrap: wrap;
-  gap: 1rem;
-  min-height: 90px;
-}
-
-.navegaçao h1 {
-  margin: 0;
-  font-size: 28px;
+  gap: 3.7rem;
 }
 
 .pages {
@@ -194,6 +228,19 @@ body {
   text-decoration: none;
   position: relative;
   white-space: nowrap;
+}
+
+.avatar-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #000;
+  font-weight: 700;
+  margin-right: 8px;
 }
 
 .pages a:not(.cadastro)::after {
@@ -213,11 +260,10 @@ body {
 
 .cadastro {
   background-color: rgb(206, 233, 4);
-  padding: 9px 18px;
+  padding: 9px;
   border-radius: 50px;
   color: black;
   text-decoration: none;
-  transition: all 0.3s ease;
 }
 
 .cadastro:hover {
@@ -280,67 +326,132 @@ main {
   line-height: 1.6;
 }
 
-/* ========== CARDS ========== */
+/* ========== CARDS (Últimas refeições) ========== */
 .cards {
   display: flex;
-  justify-content: space-around;
-  align-items: stretch;
+  flex-direction: column;
+  gap: 20px;
   font-family: Poppins, sans-serif;
   color: white;
-  gap: 40px;
   padding: 0 40px;
+}
+
+.cards-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   flex-wrap: wrap;
+  gap: 12px;
 }
 
-.card1, .card2, .card3 {
-  border: white solid 2px;
-  border-radius: 20px;
-  padding: 30px 25px;
-  flex: 1;
-  min-width: 250px;
-  max-width: 350px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  transition: all 0.3s ease;
-}
-
-.card1:hover, .card2:hover, .card3:hover {
-  box-shadow: 0 10px 30px rgba(206, 233, 4, 0.2);
-  border-color: rgb(206, 233, 4);
-}
-
-.cards h1 {
-  font-size: 24px;
-  margin-bottom: 5px;
-}
-
-.cards p {
+.cards-head h2 {
   font-size: 32px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  color: rgb(206, 233, 4);
-  margin: 10px 0;
+  margin: 0;
 }
 
-.cards a {
+.cards-head p {
+  margin: 6px 0 0;
+  opacity: 0.85;
+  max-width: 480px;
+}
+
+.cards-link {
+  background-color: rgb(206, 233, 4);
   color: black;
   text-decoration: none;
-  background-color: rgb(206, 233, 4);
-  padding: 12px 20px;
+  padding: 10px 18px;
   border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 12px 24px rgba(206, 233, 4, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.cards a:hover {
-  background-color: rgb(180, 202, 12);
-  transform: scale(1.05);
+.cards-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(206, 233, 4, 0.35);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.recent-meal-card {
+  background-color: #ffffff;
+  color: #111;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15);
+}
+
+.recent-meal-head h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.recent-meal-head p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.macro-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.macro-row div {
+  background: #f5f5f5;
+  border-radius: 14px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.macro-row span {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+  color: black;
+}
+
+.macro-row strong {
+  font-size: 20px;
+  color: rgb(0, 0, 0);
+}
+
+.ingredients-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ingredients-preview .pill {
+  background: rgba(206, 233, 4, 0.15);
+  border-radius: 999px;
+  border: 1px solid rgba(206, 233, 4, 0.4);
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #111;
+}
+
+.card-placeholder {
+  grid-column: 1 / -1;
+  background: #ffffff;
+  color: #111;
+  border: 1px dashed rgba(206, 233, 4, 0.7);
+  border-radius: 20px;
+  padding: 28px;
+  text-align: center;
 }
 
 /* ========== TREINOS ========== */
@@ -654,7 +765,7 @@ main {
   }
 
   .cards {
-    gap: 30px;
+    padding: 0 30px;
   }
 
   .treinos h1 {
@@ -683,14 +794,13 @@ main {
     max-width: 100%;
   }
 
-  .cards {
+  .cards-head {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 
-  .card1, .card2, .card3 {
-    max-width: 500px;
-    width: 100%;
+  .cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
@@ -744,15 +854,18 @@ main {
 
   .cards {
     padding: 0 25px;
-    gap: 25px;
   }
 
-  .cards h1 {
-    font-size: 20px;
+  .cards-head h2 {
+    font-size: 26px;
   }
 
-  .cards p {
-    font-size: 28px;
+  .cards-head p {
+    font-size: 14px;
+  }
+
+  .macro-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .treinos {

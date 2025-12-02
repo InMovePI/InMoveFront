@@ -27,9 +27,9 @@ const handleContinuar = () => {
     return
   }
 
-  // Validação de senha (mínimo 6 caracteres)
-  if (senha.value.length < 6) {
-    erro.value = 'A senha deve ter no mínimo 6 caracteres'
+  // Validação de senha (mínimo 8 caracteres)
+    if (senha.value.length < 8) {
+      erro.value = 'A senha deve ter no mínimo 8 caracteres'
     return
   }
 
@@ -154,7 +154,7 @@ const handleContinuar = () => {
   z-index: 1;
 
   /* OPÇÃO 1: Use background-image */
-  background-image: url('/public/mulherAlongando.png');
+  background-image: url('/mulherAlongando.png');
   opacity: 0.9;
   background-size: cover;
   background-position-y: 30%;

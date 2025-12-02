@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
-import api from '@/services/api';
+// api import removed; use Auth Store
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
 
@@ -69,6 +70,8 @@ function handleClickFora(event) {
   }
 }
 
+const authStore = useAuthStore();
+
 const handleCadastro = async () => {
   // Validações
   if (!pesoAtual.value || !altura.value || !metaPeso.value || !objetivo.value) {
@@ -115,22 +118,27 @@ const handleCadastro = async () => {
   erro.value = '';
 
   try {
-    const response = await api.post('/api/usuarios/', dadosCompletos);
-    
-    // Salvar token se a API retornar
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-    }
-    
-    // Salvar dados do usuário
-    localStorage.setItem('user', JSON.stringify(response.data));
-    
+    // Use the authStore to register. This will also perform login and fetch current user.
+    await authStore.register({
+      email: dadosCompletos.email,
+      name: dadosCompletos.name,
+      password: dadosCompletos.password,
+      data_nascimento: dadosCompletos.data_nascimento,
+      genero: dadosCompletos.genero,
+      altura_cm: dadosCompletos.altura_cm,
+      peso_kg: dadosCompletos.peso_kg,
+      meta_peso: dadosCompletos.meta_peso,
+      objetivo: dadosCompletos.objetivo,
+      dias_treino: dadosCompletos.dias_treino,
+      grupo_foco: dadosCompletos.grupo_foco,
+    });
+
     // Limpar dados temporários do cadastro
     localStorage.removeItem('dadosCadastro');
-    
+
     // Redirecionar para home/dashboard
-    router.push('/perfil');
-    
+    router.push('/dashboard');
+
   } catch (err) {
     console.error('Erro ao cadastrar:', err);
     
@@ -145,9 +153,9 @@ const handleCadastro = async () => {
                      err.response.data.detail ||
                      'Erro ao cadastrar. Tente novamente.';
       }
-    } else {
-      erro.value = 'Erro ao conectar com o servidor. Verifique sua conexão.';
-    }
+      } else {
+        erro.value = 'Erro ao conectar com o servidor. Verifique sua conexão.';
+      }
   } finally {
     loading.value = false;
   }
@@ -335,7 +343,7 @@ onBeforeUnmount(() => {
   height: 100%;
   z-index: 1;
   
-  background-image: url('/public/mulherAlongando.png');
+  background-image: url('/mulherAlongando.png');
   opacity: 0.9;
   background-size: cover;
   background-position-y: 30%;

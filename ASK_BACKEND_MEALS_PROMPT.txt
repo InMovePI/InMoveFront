@@ -1,0 +1,71 @@
+Por favor confirme os detalhes da API de "Meals" para que o frontend possa integrar corretamente.
+
+1) Autenticação
+- Qual o header exato esperado para autenticação? (ex.: Authorization: Bearer <token>)
+- Existe TTL / expiração do token? Há endpoint para refresh token? Se sim, como usar?
+- Pode fornecer um token de teste (ou credenciais) para testar as rotas em ambiente dev?
+
+2) Base & CORS
+- Qual é a base URL da API em desenvolvimento (ex.: http://localhost:8000/api)? Confirme VITE_API_BASE.
+- O backend permite CORS para http://localhost:5173 (e quais headers/metodos)? Há regras de preflight (OPTIONS)?
+
+3) Endpoints e formatos (exemplos completos de request/response)
+- GET /meals/search-food/?q=<query>
+  - Exemplo de resposta JSON completa (inclua id, name, brand, nutrients: {calories, protein, carbs, fat} por 100g).
+  - IDs são sempre strings/números? Existem itens sem `id`?
+
+- POST /meals/
+  - Confirme o payload e campos obrigatórios (exemplo esperado já definido no frontend):
+    {
+      "title": "Café",
+      "date": "2025-12-02",
+      "time": "08:30:00",
+      "ingredients": [ { "food_name": "0123456789012" OR "Banana", "weight_grams": 100 } ]
+    }
+  - Exemplo de resposta (retorna objeto criado com id? Location header? status 201?)
+
+- GET /meals/?date=YYYY-MM-DD
+  - Estrutura de paginação (ex.: { results, next, previous, count } ?)
+
+- GET /meals/<id>/
+  - Exemplo de resposta para detalhe (ingredients incluem macros calculados? Ou apenas name + nutrients por 100g?)
+
+- DELETE /meals/<id>/
+  - Status de sucesso esperado (204? 200?) e comportamento em caso de não-dono (403?).
+
+- GET /meals/weekly-summary/
+  - Exemplo de resposta JSON completo (dia a dia — quais chaves? monday..sunday? formatos e week_total?).
+
+4) Regras / validações do backend
+- Quais validações existem (campos obrigatórios, tamanhos, limites) e formato de mensagens de erro (ex.: { field: ["msg"] } ou { detail: "msg" } )?
+- Regras de ownership (como o front sabe que o usuário é dono da meal? Há um campo owner_id, owner.username, is_owner?).
+- Limites: peso mínimo/máximo por ingrediente? tamanho máximo do título?
+
+5) Erros / códigos / edge cases
+- Exemplos de respostas de erro 400 / 401 / 403 / 404 / 422 com payloads reais para cada caso (útil para testes e mensagens UX).
+
+6) Integração para search caching & autosuggest
+- Existe endpoint para obter um alimento por ID (GET /meals/search-food/<id> ou similar)? Seria útil para atualizar dados ao selecionar.
+- Existe TTL de atualização do catálogo de alimentos (para invalidar cache no frontend)?
+
+7) Infra / testes / tooling
+- Há Swagger / OpenAPI ou Postman collection disponível que possamos usar para mocks/testes?
+- Pode fornecer fixtures (ex.: 1–3 refeições reais e 4–6 alimentos) para testes locais?
+
+Pedido pronto (modelo para colar):
+"Preciso que confirme os detalhes da API de Meals para que o frontend consiga integrar. Pode me fornecer:
+- VITE_API_BASE exato usado no dev,
+- exemplos completos de responses para: search-food, POST /meals/, GET list (paginado), GET detail, DELETE, weekly-summary,
+- shape/campos de erro (ex.: validação),
+- políticas de autenticação (token/refresh/expiração),
+- se CORS permite http://localhost:5173 e instruções para testes (tokens/fixtures/Swagger).
+Obrigado — com essa info eu termino a integração, validações e testes end-to-end."
+
+Exemplos curl para testar rapidamente:
+curl -i "http://<API_BASE>/meals/search-food/?q=banana" -H "Authorization: Bearer <ACCESS_TOKEN>"
+
+curl -i -X POST "http://<API_BASE>/meals/" -H "Authorization: Bearer <ACCESS_TOKEN>" -H "Content-Type: application/json" -d '{"title":"Café","date":"2025-12-02","time":"08:30:00","ingredients":[{"food_name":"0123456789012","weight_grams":100}]}'
+
+curl -i "http://<API_BASE>/meals/?date=2025-12-02" -H "Authorization: Bearer <ACCESS_TOKEN>"
+
+Obrigado, aguardo as respostas e fixtures/token(s) para finalizar a integração e validar os testes.
