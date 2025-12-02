@@ -113,14 +113,14 @@ function handleLogout() {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: #22ff99;
+  background: rgb(206, 233, 4);
   color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 28px;
-  box-shadow: 0 4px 12px rgba(34,255,153,0.4);
+  box-shadow: 0 4px 12px rgba(206,233,4,0.4);
   flex-shrink: 0;
 }
 
@@ -139,7 +139,7 @@ function handleLogout() {
 /* Seção de informações */
 .perfil-section h3 {
   margin-bottom: 12px;
-  color: #22ff99;
+  color: rgb(206, 233, 4);
   font-size: 18px;
   font-weight: 600;
 }
@@ -180,13 +180,13 @@ function handleLogout() {
 }
 
 .btn-primary {
-  background: #22ff99;
+  background: rgb(206, 233, 4);
   color: #111827;
-  box-shadow: 0 4px 12px rgba(34,255,153,0.4);
+  box-shadow: 0 4px 12px rgba(206,233,4,0.4);
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(34,255,153,0.6);
+  box-shadow: 0 6px 16px rgba(206,233,4,0.6);
 }
 
 .btn-danger {

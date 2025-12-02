@@ -11,7 +11,9 @@ describe('AuthService', () => {
 
   it('login stores tokens and sets auth header', async () => {
     vi.spyOn(api, 'post').mockResolvedValue({ data: { access: 'a-token', refresh: 'r-token' } });
+    const postSpy = vi.spyOn(api, 'post')
     const result = await AuthService.login('test@example.com', 'password123');
+    expect(postSpy).toHaveBeenCalledWith('/api/token/', { email: 'test@example.com', password: 'password123' });
     expect(localStorage.getItem('access_token')).toBe('a-token');
     expect(localStorage.getItem('refresh_token')).toBe('r-token');
     expect(api.defaults.headers.common['Authorization']).toBe('Bearer a-token');
@@ -30,7 +32,7 @@ describe('AuthService', () => {
     const spy = vi.spyOn(api, 'patch').mockResolvedValue({ data: updated });
     const payload = { name: 'J' };
     const result = await AuthService.update(payload, false);
-    expect(spy).toHaveBeenCalledWith('/usuarios/me/', payload, { headers: { 'Content-Type': 'application/json' } });
+    expect(spy).toHaveBeenCalledWith('/api/usuarios/me/', payload, { headers: { 'Content-Type': 'application/json' } });
     expect(result).toEqual(updated);
   });
 

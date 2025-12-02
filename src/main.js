@@ -23,3 +23,18 @@ try {
 }
 
 app.mount('#app');
+
+// During development ensure any previously-registered service workers are removed
+// to avoid stale service worker behavior (caching / intercept) which causes dev-time issues.
+if (import.meta.env.DEV && 'serviceWorker' in navigator) {
+	navigator.serviceWorker.getRegistrations().then((registrations) => {
+		for (const r of registrations) {
+			try { r.unregister(); } catch (e) { /* ignore */ }
+		}
+	}).catch(() => {});
+
+	// clear runtime caches created by workbox during development
+	if ('caches' in window) {
+		caches.keys().then((keys) => keys.forEach((k) => caches.delete(k))).catch(() => {});
+	}
+}

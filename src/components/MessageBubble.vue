@@ -59,13 +59,13 @@ const formattedTime = computed(() => {
 /* Usuário → direita */
 .user-message {
   align-self: flex-end;
-  background: linear-gradient(135deg, #22ff99, #00ff55);
+  background: linear-gradient(135deg, rgb(206, 233, 4), rgba(206,233,4,0.8));
   color: #111827;
-  box-shadow: 0 2px 8px rgba(34, 255, 153, 0.3);
+  box-shadow: 0 2px 8px rgba(206, 233, 4, 0.3);
 }
 .user-message:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(34, 255, 153, 0.5);
+  box-shadow: 0 4px 12px rgba(206, 233, 4, 0.5);
 }
 
 /* Assistente → esquerda */
@@ -81,8 +81,8 @@ const formattedTime = computed(() => {
 }
 
 /* Markdown */
-.assistant-message a { color:#22ff99; text-decoration: underline; }
-.assistant-message strong { color:#22ff99; }
+.assistant-message a { color:rgb(206, 233, 4); text-decoration: underline; }
+.assistant-message strong { color:rgb(206, 233, 4); }
 .assistant-message em { font-style: italic; }
 
 .msg-time {

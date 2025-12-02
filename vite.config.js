@@ -18,13 +18,13 @@ export default defineConfig({
         theme_color: '#ffffff',
         icons: [
           {
-            src: '/public/pwa-192x192.png',
+            src: '/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/public/pwa-512x512.png',
+            src: '/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
@@ -38,8 +38,9 @@ export default defineConfig({
           client_mode: ['navigate-existing', 'auto'],
         },
       },
+      // Disable PWA service worker in development to avoid caching/interception issues.
       devOptions: {
-        enabled: true,
+        enabled: false,
       },
     }),
   ],

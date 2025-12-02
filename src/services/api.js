@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000/api';
+// Backend root is at http://localhost:8000 — token endpoints live under /api/* while meals are at /
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_BASE,

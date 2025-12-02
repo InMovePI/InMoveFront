@@ -11,13 +11,44 @@ export const useChatStore = defineStore('chat', {
     errorMessage: null,
   }),
   actions: {
+    // helper: try the given api URL; if that returns 404, retry with '/api' prefix
+    async requestWithFallback(method, url, payload = undefined) {
+      try {
+        if (method === 'get') return await api.get(url);
+        if (method === 'post') return await api.post(url, payload);
+        if (method === 'patch') return await api.patch(url, payload);
+        if (method === 'delete') return await api.delete(url);
+        // default
+        return await api.request({ method, url, data: payload });
+      } catch (err) {
+        // only attempt fallback for 404 Not Found
+        const status = err?.response?.status;
+        if (status === 404) {
+          try {
+            const alt = url.startsWith('/api/') ? url : '/api' + url;
+            if (method === 'get') return await api.get(alt);
+            if (method === 'post') return await api.post(alt, payload);
+            if (method === 'patch') return await api.patch(alt, payload);
+            if (method === 'delete') return await api.delete(alt);
+            return await api.request({ method, url: alt, data: payload });
+          } catch (err2) {
+            // rethrow original error to preserve semantics
+            throw err;
+          }
+        }
+        throw err;
+      }
+    },
     /** Load list of sessions (history) */
     async loadSessions() {
       try {
-        const res = await api.get('/chat/sessions/');
+        const res = await this.requestWithFallback('get', '/chat/sessions/');
         this.sessions = Array.isArray(res.data) ? res.data : [];
       } catch (err) {
+        // If the API is not present (404) or other network issue, keep UI usable
         this.error = err;
+        this.sessions = this.sessions || [];
+        this.errorMessage = 'Não foi possível carregar histórico de conversas (API indisponível).';
         console.error('Failed to load chat sessions/history', err);
       }
     },
@@ -30,7 +61,7 @@ export const useChatStore = defineStore('chat', {
       try {
         const payload = { message: text };
         if (sessionId || this.selectedSession) payload.session_id = sessionId || this.selectedSession;
-        const res = await api.post('/chat/', payload);
+        const res = await this.requestWithFallback('post', '/chat/', payload);
         const data = res.data;
         // Backend might return treino/dieta or reply text
         if (data && (data.treino || data.dieta)) {
@@ -100,7 +131,7 @@ export const useChatStore = defineStore('chat', {
     async createSession(title = null) {
       try {
         const payload = title ? { title } : {};
-        const res = await api.post('/chat/sessions/', payload);
+        const res = await this.requestWithFallback('post', '/chat/sessions/', payload);
         const created = res.data;
         if (created?.id) {
           // refresh session list and select
@@ -111,15 +142,28 @@ export const useChatStore = defineStore('chat', {
         }
         return created;
       } catch (err) {
+        // If backend is missing, fall back to a local session so the UI remains usable
         this.error = err;
-        console.error('Failed to create session', err);
-        throw err;
+        console.warn('Failed to create session on server, creating local fallback', err);
+        const fallbackId = `local-${Date.now()}`;
+        const created = {
+          id: fallbackId,
+          title: title || `Conversa ${fallbackId}`,
+          updated_at: new Date().toISOString(),
+          last_message: null,
+        };
+        // keep local list updated
+        this.sessions = [created, ...(this.sessions || [])];
+        this.selectedSession = created.id;
+        this.messages = [];
+        this.errorMessage = 'API indisponível — sessão criada localmente.';
+        return created;
       }
     },
     async renameSession(sessionId, title) {
       try {
         if (!sessionId) throw new Error('Missing session id');
-        const res = await api.patch(`/chat/sessions/${sessionId}/`, { title });
+        const res = await this.requestWithFallback('patch', `/chat/sessions/${sessionId}/`, { title });
         const updated = res.data;
         // update local sessions
         this.sessions = this.sessions.map((s) => 
@@ -140,7 +184,7 @@ export const useChatStore = defineStore('chat', {
     async deleteSession(sessionId) {
       try {
         if (!sessionId) throw new Error('Missing session id');
-        await api.delete(`/chat/sessions/${sessionId}/`);
+        await this.requestWithFallback('delete', `/chat/sessions/${sessionId}/`);
         // remove locally
         this.sessions = this.sessions.filter((s) => s.id !== sessionId);
         if (this.selectedSession === sessionId) {
@@ -176,7 +220,7 @@ export const useChatStore = defineStore('chat', {
     async loadSessionMessages(sessionId) {
       try {
         // CORREÇÃO: Usar o endpoint correto para buscar MENSAGENS da sessão
-        const res = await api.get(`/chat/sessions/${sessionId}/messages/`);
+        const res = await this.requestWithFallback('get', `/chat/sessions/${sessionId}/messages/`);
         let messages = Array.isArray(res.data) ? res.data : [];
         
         // Normalize messages: parse JSON for assistant card
@@ -198,9 +242,13 @@ export const useChatStore = defineStore('chat', {
         this.selectedSession = sessionId;
         return messages;
       } catch (err) {
+        // If we cannot reach the backend, keep the UI functional: empty message list and select session
         this.error = err;
+        this.errorMessage = 'Não foi possível carregar mensagens desta sessão (API indisponível).';
         console.error('Failed to load session messages', err);
-        throw err;
+        this.messages = [];
+        this.selectedSession = sessionId;
+        return [];
       }
     }
   }

@@ -6,6 +6,9 @@ import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import PerfilView from "../views/PerfilView.vue";
 import EditProfileView from "../views/EditProfileView.vue";
+import TreinosView from "../views/TreinosView.vue";
+import TreinamentosView from "../views/TreinamentosView.vue";
+import TreinoDetailView from "../views/TreinoDetailView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +41,22 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/treinos',
+      name: 'treinos',
+      component: TreinosView,
+    },
+    {
+      path: '/treinamentos',
+      name: 'treinamentos',
+      component: TreinamentosView,
+    },
+    {
+      path: '/treinamentos/:slug',
+      name: 'treinamentos.detail',
+      component: TreinoDetailView,
     },
     {
       path: '/perfil',
@@ -53,6 +72,31 @@ const router = createRouter({
       path: '/chat',
       name: 'chat',
       component: () => import('@/views/ChatPage.vue'),
+      meta: { requiresAuth: true },
+    }
+    ,
+    {
+      path: '/meals',
+      name: 'meals.list',
+      component: () => import('@/components/MealsList.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/meals/create',
+      name: 'meals.create',
+      component: () => import('@/components/MealForm.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/meals/:id',
+      name: 'meals.detail',
+      component: () => import('@/components/MealDetail.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/meals/weekly-summary',
+      name: 'meals.weekly',
+      component: () => import('@/components/WeeklySummary.vue'),
       meta: { requiresAuth: true },
     }
   ],

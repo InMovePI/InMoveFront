@@ -343,7 +343,7 @@ onBeforeUnmount(() => {
   height: 100%;
   z-index: 1;
   
-  background-image: url('/public/mulherAlongando.png');
+  background-image: url('/mulherAlongando.png');
   opacity: 0.9;
   background-size: cover;
   background-position-y: 30%;

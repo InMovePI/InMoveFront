@@ -38,12 +38,18 @@ watch(() => chatStore.errorMessage, (v) => {
 });
 
 onMounted(async () => {
-  await chatStore.loadSessions();
-  if (chatStore.sessions?.length) {
-    const first = chatStore.sessions[0];
-    await chatStore.loadSessionMessages(first.id);
-  } else {
-    await chatStore.createSession();
+  try {
+    await chatStore.loadSessions();
+    if (chatStore.sessions?.length) {
+      const first = chatStore.sessions[0];
+      await chatStore.loadSessionMessages(first.id);
+    } else {
+      await chatStore.createSession();
+    }
+  } catch (err) {
+    // Ensure mounted hook errors are handled and surfaced via chatStore
+    chatStore.setError('Erro ao inicializar chat — funcionando em modo local.');
+    console.warn('ChatPage mounted handler encountered an error', err);
   }
 });
 
@@ -63,8 +69,8 @@ const chatTitle = computed(() => {
 .chat-main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
 
 .chat-mobile-header { display:none; align-items:center; padding:12px 16px; background:#2a2a2a; border-bottom:1px solid rgba(255,255,255,0.05); gap:12px; }
-.chat-mobile-header h3 { color:#22ff99; font-weight:700; margin:0; font-size:18px; }
-.hamburger { font-size:24px; background:transparent; border:none; color:#22ff99; cursor:pointer; }
+.chat-mobile-header h3 { color:rgb(206, 233, 4); font-weight:700; margin:0; font-size:18px; }
+.hamburger { font-size:24px; background:transparent; border:none; color:rgb(206, 233, 4); cursor:pointer; }
 
 .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:20; }
 

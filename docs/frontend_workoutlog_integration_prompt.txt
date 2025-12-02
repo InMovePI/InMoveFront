@@ -1,0 +1,96 @@
+Prompt para frontend — Integração automática de logs de treino
+
+Objetivo
+--------
+Persistir automaticamente no backend os treinos concluídos por cada usuário (privado por usuário). O frontend deverá enviar os dados principais assim que o usuário finalizar um treino e também suportar reenvio/queue quando estiver offline.
+
+Endpoints (backend)
+-------------------
+- POST /workouts/log/
+  - Autenticação: JWT Bearer (Authorization: Bearer <token>) — JWT obrigatório.
+  - Body (aceita camelCase do frontend):
+    {
+      "workoutSlug": "run-5k",
+      "caloriesBurned": 300.0,
+      "durationMinutes": 35.0,
+      "finishedAt": "2025-12-02T14:30:00Z"
+    }
+  - Responses:
+    - 201 Created → retorna JSON do registro salvo
+    - 400 Bad Request → payload inválido
+    - 401 Unauthorized → token inválido / ausente
+
+- GET /workouts/logs/
+  - Autenticação: JWT Bearer
+  - Retorna: lista de logs do usuário autenticado (ordenados por finished_at desc)
+
+Requisitos UX / fluxo
+---------------------
+1) Detecção de término do treino
+   - Quando o frontend detectar que o treino foi finalizado deve coletar os dados e chamar POST /workouts/log/.
+
+2) Envio imediato
+   - Enquanto request pendente, mostrar feedback "Salvando treino...".
+   - Se 201 → exibir confirmação sutil "Treino salvo".
+   - Se 401 → abrir fluxo de reautenticação / mostrar aviso.
+   - Se 400 → exibir erros de validação recebidos do backend.
+
+3) Reenvio/manual / retry
+   - Em falha de rede / 5xx → implementar retry com backoff (ex.: 2 tentativas: 500ms, 1500ms).
+   - Se ainda falhar, salvar localmente (IndexedDB/localStorage) com status pendente e agendar sincronização automática quando online.
+
+4) Offline-first
+   - Se o app detecta offline: salvar log localmente e marcar status "pendente". Quando a rede retornar, tentar enviar automaticamente.
+
+5) Proteção contra duplicados
+   - Evitar reenvio acidental (bloquear botão / debounce enquanto request pendente). Use server-side dedupe se necessário.
+
+6) Privacidade e multi-tenant
+   - Backend só persiste records associados ao usuário do token. UI mostra só registros do usuário atual.
+
+Validações no front-end
+-----------------------
+- caloriesBurned: número, >= 0
+- durationMinutes: número, > 0
+- slug: string curta, max 255, opcional
+- finishedAt: ISO string válida se enviada
+
+Exemplo de payload e resposta
+------------------------------
+Request POST /workouts/log/
+{
+  "workoutSlug": "run-5k",
+  "caloriesBurned": 300,
+  "durationMinutes": 35,
+  "finishedAt": "2025-12-02T14:30:00Z"
+}
+
+Successful response (201):
+{
+  "id": "f3b3e0f9-...",
+  "user_id": 42,
+  "workout_slug": "run-5k",
+  "calories_burned": 300.0,
+  "duration_minutes": 35.0,
+  "finished_at": "2025-12-02T14:30:00Z",
+  "created_at": "2025-12-02T14:30:10Z",
+  "updated_at": "2025-12-02T14:30:10Z"
+}
+
+Notas de implementação (frontend)
+--------------------------------
+- Serviço axios já existe em `src/services/api.js` e adiciona Authorization header a partir de localStorage.
+- Novo serviço `src/services/workoutLog.js` armazena fila em localStorage e implementa retries/backoff.
+- Novo store Pinia `src/stores/workoutLogs.js` expõe `saveLog`, `syncQueue`, `fetchLogs` e mantém estado local.
+- A view `src/views/TreinoDetailView.vue` agora tem botão "Concluir treino" que chama `saveLog` usando o store. Fornece feedback "Salvando treino..." e enfileira quando offline.
+
+Testes
+------
+- Unit tests added: `src/services/__tests__/workoutLog.spec.js` covering offline queueing + successful save + retry -> queued.
+
+Critérios de aceite (frontend)
+-----------------------------------
+1) Ao finalizar o treino: frontend chama `/workouts/log/` com JWT no header e payload em camelCase; backend retorna 201 e UI confirma.
+2) Se offline, o log fica salvo localmente e é sincronizado automaticamente quando online.
+3) O histórico mostra somente logs do usuário (GET /workouts/logs/).
+4) Testes unitários adicionados para o fluxo de fila.

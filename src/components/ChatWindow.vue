@@ -134,11 +134,11 @@ function formatCard(card) {
   background: #1e1e1e;
 }
 .chat-history::-webkit-scrollbar-thumb {
-  background: #22ff99;
+  background: rgb(206, 233, 4);
   border-radius: 4px;
 }
 .chat-history::-webkit-scrollbar-thumb:hover {
-  background: #00ff55;
+  background: rgba(206,233,4,0.85);
 }
 
 /* Compositor de mensagens */
@@ -165,12 +165,12 @@ textarea {
   transition: border-color 0.2s;
 }
 textarea:focus {
-  border-color: #22ff99;
+  border-color: rgb(206, 233, 4);
   outline: none;
 }
 
 .composer-actions button {
-  background: #22ff99;
+  background: rgb(206, 233, 4);
   color: #111;
   border: none;
   border-radius: 20px;
@@ -181,7 +181,7 @@ textarea:focus {
 }
 .composer-actions button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(34,255,153,0.4);
+  box-shadow: 0 4px 8px rgba(206,233,4,0.4);
 }
 button[disabled] {
   opacity: 0.6;

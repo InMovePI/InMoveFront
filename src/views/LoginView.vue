@@ -64,7 +64,7 @@ const handleKeyPress = (event) => {
     <div class="background-image">
       <!-- OPÇÃO 1: Use background-image no CSS -->
       <!-- OPÇÃO 2: Ou descomente a linha abaixo -->
-      <!-- <img src="/public/gym.jpg" alt="Background" /> -->
+      <!-- <img src="/gym.jpg" alt="Background" /> -->
     </div>
 
     <!-- Card do login com efeito glass -->
@@ -161,7 +161,7 @@ const handleKeyPress = (event) => {
   z-index: 1;
   
   /* OPÇÃO 1: Use background-image */
-  background-image: url('/public/mulherAlongando.png');
+  background-image: url('/mulherAlongando.png');
   opacity: 0.9;
   background-size: cover;
   background-position-y: 30%;

@@ -154,7 +154,7 @@ const handleContinuar = () => {
   z-index: 1;
 
   /* OPÇÃO 1: Use background-image */
-  background-image: url('/public/mulherAlongando.png');
+  background-image: url('/mulherAlongando.png');
   opacity: 0.9;
   background-size: cover;
   background-position-y: 30%;

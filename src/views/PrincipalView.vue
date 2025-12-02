@@ -1,7 +1,9 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-import { useAuthStore } from '@/stores/auth';
-const authStore = useAuthStore();
+import { useAuthStore } from '@/stores/auth'
+import AppFooter from '@/components/AppFooter.vue'
+
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -32,14 +34,14 @@ const authStore = useAuthStore();
         </p>
       </div>
 
-      <img src="/public/mulheres-jovens-participando-da-aula-de-spinning(1).jpg" alt="" />
+      <img src="/mulheres-jovens-participando-da-aula-de-spinning(1).jpg" alt="" />
     </div>
 
     <div class="dois">
       <h1>POR QUÊ ESCOLHER A <span>INMOVE</span>?</h1>
       <div class="topicos">
         <div class="container">
-          <img src="/public/icons8-alvo-32.png" />
+          <img src="/icons8-alvo-32.png" />
           <h1>PROGRESSO</h1>
           <p>
             Acompanhe sua evolução com treinos planejados para desafiar seus limites e gerar
@@ -47,7 +49,7 @@ const authStore = useAuthStore();
           </p>
         </div>
         <div class="container">
-          <img src="/public/icons8-tríceps-32.png" />
+          <img src="/icons8-tríceps-32.png" />
           <H1>TREINOS PERSONALIZADOS</H1>
           <p>
             Cada corpo é único. Por isso, nossos programas são criados com base nos seus objetivos -
@@ -57,7 +59,7 @@ const authStore = useAuthStore();
       </div>
       <div class="topicos">
         <div class="container">
-          <img src="/public/icons8-nutrição-32.png" />
+          <img src="/icons8-nutrição-32.png" />
           <h1>ORIENTAÇÃO NUTRICIONAL</h1>
           <p>
             Potencialize seus resultados com orientações nutricionais que complementam o treino e
@@ -65,7 +67,7 @@ const authStore = useAuthStore();
           </p>
         </div>
         <div class="container">
-          <img src="/public/icons8-protect-32.png" />
+          <img src="/icons8-protect-32.png" />
           <h1>AUTODEFESA E CONFIANÇA</h1>
           <p>
             Desenvolva força física e mental com atividades que unem preparo corporal e técnicas de
@@ -82,14 +84,14 @@ const authStore = useAuthStore();
   <!-- PRIMEIRA LINHA -->
   <div class="serviços-container">
     <div class="serviços">
-      <img src="/public/dias-de-fitness-linda-mulher-loira-na-academia-no-fim-de-semana.jpg" />
+      <img src="/dias-de-fitness-linda-mulher-loira-na-academia-no-fim-de-semana.jpg" />
       <h2>Força e Cardio</h2>
       <p>Melhore o condicionamento físico</p>
     </div>
 
     <div class="serviços">
       <img
-        src="/public/jovem-desportista-feliz-se-preparando-para-um-treino-e-amarrando-cadarco-no-centro-de-fitness.jpg"
+        src="/jovem-desportista-feliz-se-preparando-para-um-treino-e-amarrando-cadarco-no-centro-de-fitness.jpg"
       />
       <h2>Treinos femininos</h2>
       <p>Treinos pensados para o corpo feminino, com foco em bem-estar, definição e saúde.</p>
@@ -99,13 +101,13 @@ const authStore = useAuthStore();
   <!-- SEGUNDA LINHA -->
   <div class="serviços-container segunda-linha">
     <div class="serviços">
-      <img src="/public/bodybuilder-training-arm-with-resistance-band.jpg" />
+      <img src="/bodybuilder-training-arm-with-resistance-band.jpg" />
       <h2>Yoga e Flexibilidade</h2>
       <p>Práticas que unem corpo e mente, aumentando o equilíbrio, a flexibilidade e a paz interior.</p>
     </div>
 
     <div class="serviços">
-      <img src="/public/woman-helping-man-gym.jpg" />
+      <img src="/woman-helping-man-gym.jpg" />
       <h2>Treinos em Grupo</h2>
       <p>Atividades dinâmicas e motivadoras com grupos para incentivar o desempenho e a constância.</p>
     </div>
@@ -113,6 +115,7 @@ const authStore = useAuthStore();
 </div>
 
   </main>
+  <AppFooter />
 </template>
 
 <style scoped>
